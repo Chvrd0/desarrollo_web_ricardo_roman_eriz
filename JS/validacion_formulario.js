@@ -73,13 +73,21 @@ const validateNums = (num, min, max) => {
     return num <= max && num >= min && num % 1 === 0;
 };
 
-const validateFecha = (date) => {
-    let newDate = new Date(date)
-    let act = new Date();
-    act.setHours(now.getHours() - 1);
-    return act < newDate;
-}
+const validateFecha = (date, act) => {
+    let newDate = new Date(date);
+    return newDate > act;
+};
 
+// Tuve que arreglar los minutos, ya que no me validaba con >=
+let now = new Date();
+now.setHours(now.getHours() + 3);
+now.setMinutes(now.getMinutes() - 1)
+
+// Y separa la fecha que se muestra y la que se evalúa, ya que me muestra una hora diferente a la que se evalúa.
+let fechaAMostrar = new Date();
+fechaAMostrar.setHours(fechaAMostrar.getHours() - 1);
+const formattedDate = fechaAMostrar.toISOString().slice(0, 16);
+document.getElementById("entrega").value = formattedDate;
 
 const validateForm = () => {
     // obtener elementos del DOM usando el nombre del formulario.
@@ -159,6 +167,9 @@ const validateForm = () => {
     }
     if (!validateFilesOptional(foto4)) {
         setInvalidInput("Fotos");
+    }
+    if (!validateFecha(entrega, now)) {
+        setInvalidInput("Fecha de entrega");
     }
     if (!validateFilesOptional(foto5)) {
         setInvalidInput("Fotos");
