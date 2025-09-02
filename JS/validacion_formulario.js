@@ -70,7 +70,7 @@ const validateSelect = (select) => {
 
 const validateNums = (num, min, max) => {
     if(!num) return false;
-    return num <= max && num >= min;
+    return num <= max && num >= min && num % 1 === 0;
 };
 
 const validateFecha = (date) => {
@@ -82,7 +82,7 @@ const validateFecha = (date) => {
 
 
 const validateForm = () => {
-  // obtener elementos del DOM usando el nombre del formulario.
+    // obtener elementos del DOM usando el nombre del formulario.
     let myForm = document.forms["myForm"];
 
     // Donde
