@@ -68,9 +68,15 @@ const updateComunas = () => {
 function changeContactos() {
     const select = document.getElementById("select-contacto");
     const inputsContacto = document.getElementById("inputs-contacto");
-    inputsContacto.innerHTML = "";
+    const selected = Array.from(select.selectedOptions)
+    
+    if (selected.length === 0) {
+        inputsContacto.innerHTML = "";
+    }
 
-    Array.from(select.selectedOptions).forEach(option => {
+    if (selected.length <= 5) {
+        inputsContacto.innerHTML = "";
+        selected.forEach(option => {
         const label = document.createElement("label");
         label.textContent = `${option.value}`;
         label.classList.add("contact-input");
@@ -87,7 +93,8 @@ function changeContactos() {
         div.appendChild(input);
 
         inputsContacto.appendChild(div);
-    })
+        })
+    }
 }
 
 
