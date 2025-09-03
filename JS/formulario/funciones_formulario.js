@@ -63,10 +63,9 @@ const updateComunas = () => {
             comunaSelect.appendChild(option);
         });
     }
-    changeArguments();
 };
 
-function changeArguments() {
+function changeContactos() {
     const select = document.getElementById("select-contacto");
     const inputsContacto = document.getElementById("inputs-contacto");
     inputsContacto.innerHTML = "";
@@ -81,6 +80,7 @@ function changeArguments() {
         input.minLength = "4";
         input.maxLength = "50";
         input.name = `contacto-${option.value}`;
+        input.required = true
 
         const div = document.createElement("div");
         div.appendChild(label);
@@ -111,12 +111,11 @@ mostrarSiguienteInput(foto4, foto5);
 
 
 document.getElementById("select-region").addEventListener("change", updateComunas);
-document.getElementById("select-contacto").addEventListener("change", changeArguments);
+document.getElementById("select-contacto").addEventListener("change", changeContactos);
 
 window.onload = () => {
     poblarSelect(tipo_mascota, "select-tipo");
     poblarSelect(medida_edad, "select-edad");
     poblarRegiones();
-    changeArguments();
-    
+    changeContactos();
 };

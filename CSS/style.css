@@ -116,6 +116,25 @@ button:hover {
     margin-bottom: 30px;
 }
 
+.stats {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.stats img {
+    display: block;
+    margin: 0 auto 25px auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    height: 400px;
+    width: 640px;
+}
+
 #submit-btn {
     display: block;
     margin: 30px auto;
@@ -125,6 +144,7 @@ button:hover {
 
 #final-btn {
     background: #3e7c29;
+    text-align: center;
 }
 
 /* Estilos para tablas */

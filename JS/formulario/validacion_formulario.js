@@ -216,7 +216,7 @@ const validateForm = () => {
         submitButton.style.marginRight = "10px";
         submitButton.addEventListener("click", () => {
         // myForm.submit();
-            window.location.href = "../HTML/msg_final.html";
+            window.location.href = "../../HTML/formulario/msj_final_formulario.html";
         });
 
         let backButton = document.createElement("button");
