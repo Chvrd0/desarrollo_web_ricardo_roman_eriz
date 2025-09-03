@@ -81,13 +81,7 @@ const validateFecha = (date, act) => {
 // Tuve que arreglar los minutos, ya que no me validaba con >=
 let now = new Date();
 now.setHours(now.getHours() + 3);
-now.setMinutes(now.getMinutes() - 1)
-
-// Y separa la fecha que se muestra y la que se evalúa, ya que me muestra una hora diferente a la que se evalúa.
-let fechaAMostrar = new Date();
-fechaAMostrar.setHours(fechaAMostrar.getHours() - 1);
-const formattedDate = fechaAMostrar.toISOString().slice(0, 16);
-document.getElementById("entrega").value = formattedDate;
+now.setMinutes(now.getMinutes() - 1);
 
 const validateForm = () => {
     // obtener elementos del DOM usando el nombre del formulario.

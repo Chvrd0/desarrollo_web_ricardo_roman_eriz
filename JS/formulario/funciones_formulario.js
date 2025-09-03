@@ -110,6 +110,12 @@ mostrarSiguienteInput(foto3, foto4);
 mostrarSiguienteInput(foto4, foto5);
 
 
+let fechaAMostrar = new Date();
+fechaAMostrar.setHours(fechaAMostrar.getHours() - 1);
+const formattedDate = fechaAMostrar.toISOString().slice(0, 16);
+document.getElementById("entrega").value = formattedDate;
+
+
 document.getElementById("select-region").addEventListener("change", updateComunas);
 document.getElementById("select-contacto").addEventListener("change", changeContactos);
 
