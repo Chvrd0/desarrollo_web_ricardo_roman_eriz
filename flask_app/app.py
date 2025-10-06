@@ -38,9 +38,9 @@ def index():
     
     return render_template("portada/_portada.html", data=data)
 
-@app.route("/nuevo-aviso", methods=["POST"])
-def nuevoAviso():
-    return render_template("formulario/_formulario")
+@app.route("/nuevo-aviso", methods=["GET", "POST"])
+def formulario():
+    return render_template("formulario/_formulario.html")
 
 @app.route("/listado", methods=["GET"])
 def listado():
@@ -59,11 +59,11 @@ def listado():
             "descripcion": aviso.descripcion,
             "path_image": url_for('static', filename=img_filename)
         })
-    return render_template("formulario/_listado", data=data)
+    return render_template("listado/_listado.html", data=data)
 
-@app.route("/estadisticas", methods=["POST"])
+@app.route("/estadisticas", methods=["GET"])
 def estadisticas():
-    return render_template("estadisticas/_estadisticas")
+    return render_template("estadisticas/_estadisticas.html")
 
 
 
