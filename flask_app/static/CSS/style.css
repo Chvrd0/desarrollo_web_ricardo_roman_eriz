@@ -7,6 +7,7 @@ body {
     padding: 20px;
 }
 
+
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -136,10 +137,6 @@ button:hover {
     font-size: 18px;
 }
 
-#final-btn {
-    background: #3e7c29;
-    text-align: center;
-}
 
 /* Estilos para tablas */
 .tabla {
@@ -206,11 +203,14 @@ td img:hover {
 }
 
 #final-box {
-    background-color: #a4eda7;
-    border-left: 5px solid #55d749;
-    padding: 20px;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    border-left: 5px solid #6a11cb;
+    padding: 30px;
     margin-bottom: 30px;
-    border-radius: 4px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    color: white;
 }
 
 #detalle-box {
@@ -222,7 +222,7 @@ td img:hover {
 }
 
 #final-msg {
-    color: #3e7c29;
+    color: #ffffff;
     margin-bottom: 10px;
 }
 
@@ -291,8 +291,15 @@ td img:hover {
     font-size: 1.5rem;
 }
 
+.botones-detalle {
+    display: flex;
+    justify-content: center; 
+    gap: 15px;                
+    margin-top: 20px;
+}
+
 .detalle-box button {
-    text-align: center;
+    justify-content: center;
 }
 
 

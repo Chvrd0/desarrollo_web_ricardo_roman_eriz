@@ -11,19 +11,17 @@ def validate_number(value, min, max):
 def validate_required(value):
     return value != None
 
-
 def validate_email(value):
     return bool(re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", value))
 
 def validate_num(value):
-    if value == None: return True
     return bool(re.match(r"^\+56[\s\-\.]?9[\s\-\.]?\d{4}[\s\-\.]?\d{4}$", value))
 
-def validate_date(value, ingreso):
+def validate_date(value):
     fecha_hora = value.split("T")
     fecha_hora[0] = fecha_hora[0].split("-")
     fecha_hora[1] = fecha_hora[1].split(":")
-    valido = ingreso + timedelta(hours=1, minutes=-1)
+    valido = datetime.now() + timedelta(hours=1, minutes=-1)
     ingresado = datetime(int(fecha_hora[0][0]), int(fecha_hora[0][1]), int(fecha_hora[0][2]), int(fecha_hora[1][0]), int(fecha_hora[1][1])+1, 0)
     return ingresado >= valido
 
@@ -66,7 +64,7 @@ def validarAviso(comuna, sector, nombre, email, celular, tipo, cantidad, edad, u
     emailV = validate_email(email)
     if not emailV: msg += "Email inválido"
 
-    celularV = validate_num(celular)
+    celularV = celular == "None" or validate_num(celular)
     if not celularV: msg += "Celular inválido"
 
     tipoV = validate_required(tipo)
