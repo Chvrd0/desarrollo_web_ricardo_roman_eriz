@@ -209,8 +209,7 @@ const validateForm = () => {
         submitButton.innerText = "Enviar";
         submitButton.style.marginRight = "10px";
         submitButton.addEventListener("click", () => {
-        // myForm.submit();
-            window.location.href = "../../HTML/formulario/msj_final_formulario.html";
+            myForm.submit();
         });
 
         let backButton = document.createElement("button");
@@ -230,5 +229,6 @@ const validateForm = () => {
     };
 
 
-let submitBtn = document.getElementById("submit-btn");
-submitBtn.addEventListener("click", validateForm);
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("submit-btn").addEventListener("click", validateForm);
+});

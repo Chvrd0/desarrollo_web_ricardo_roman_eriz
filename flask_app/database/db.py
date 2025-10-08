@@ -60,7 +60,8 @@ class Aviso(Base):
 class ContactarPor(Base):
     __tablename__ = "contactar_por"
     id = Column(Integer, primary_key=True)
-    via = Column(String(30), nullable=False)
+    nombre = Column(String(50), nullable=False)
+    identificador = Column(String(150), nullable=False)
     aviso_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
 
     aviso = relationship("Aviso", back_populates="contactos")
@@ -69,16 +70,23 @@ class ContactarPor(Base):
 class Foto(Base):
     __tablename__ = "foto"
     id = Column(Integer, primary_key=True)
-    ruta = Column(String(255), nullable=False)
+    ruta_archivo = Column(String(255), nullable=False)
+    nombre_archivo = Column(String(255), nullable=False)
     aviso_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
 
     aviso = relationship("Aviso", back_populates="fotos")
 
 
 # --- Database Functions ---
-def get_user_by_id(id):
+def get_id(id, Tabla):
     session = SessionLocal()
-    user = session.query(Usuario).filter_by(id=id).first()
+    value = session.query(Tabla).filter_by(id=id).first()
+    session.close()
+    return value
+
+def get_name(name, Tabla):
+    session = SessionLocal()
+    user = session.query(Tabla).filter_by(nombre=name).first()
     session.close()
     return user
 
@@ -99,13 +107,58 @@ def create_aviso(comuna, sector, nombre, email, celular, tipo, cantidad, edad, u
     )
     session.add(new_aviso)
     session.commit()
+    session.refresh(new_aviso)
+    aviso_id = new_aviso.id
     session.close()
+    return aviso_id
 
-def get_avisos(page_size):
+def create_foto(path, name, aviso_id):
     session = SessionLocal()
-    confesiones = session.query(Aviso).limit(page_size).all()
+    new_foto = Foto(ruta_archivo=path, nombre_archivo=name, aviso_id=aviso_id)
+    session.add(new_foto)
+    session.commit()
     session.close()
-    return confesiones
+
+def create_contacto(via, value, aviso_id):
+    session = SessionLocal()
+    new_contacto = ContactarPor(nombre = via, identificador = value, aviso_id = aviso_id)
+    session.add(new_contacto)
+    session.commit()
+    session.close()
+
+def get_avisos(page_size, page):
+    session = SessionLocal()
+    avisos = session.query(Aviso).order_by(Aviso.fecha_ingreso.desc()).offset(page).limit(page_size).all()
+    session.close()
+    return avisos
 
 
+def get_regiones():
+    session = SessionLocal()
+    regiones = session.query(Region).all()
+    session.close()
+    return regiones
 
+def get_comunas(region):
+    session = SessionLocal()
+    comunas = session.query(Region).filter_by(id=region.id).all()
+    session.close()
+    return comunas
+
+def get_first_foto(_id):
+    session = SessionLocal()
+    foto = session.query(Foto).filter_by(aviso_id=_id).first()
+    session.close()
+    return foto
+
+def count(Tabla):
+    session = SessionLocal()
+    total = session.query(func.count(Tabla.id)).scalar()
+    session.close()
+    return total
+
+def get_aviso_id(_id, Tabla):
+    session = SessionLocal()
+    info = session.query(Tabla).filter_by(aviso_id=_id).all()
+    session.close()
+    return info

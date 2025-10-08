@@ -20,19 +20,14 @@
             <tbody>
                 {%if data %}
                     {% for aviso in data %}
-                    <tr>
+                    <tr onclick="window.location='{{ url_for('detalles', id=aviso.id) }}'">
                         <td>{{ aviso.fecha_ingreso }}</td>
                         <td>{{ aviso.fecha_entrega }}</td>
                         <td>{{ aviso.comuna }}</td>
                         <td>{{ aviso.sector }}</td>
                         <td>{{ aviso.cantidad }} {{ aviso.tipo }}<br>{{ aviso.edad }} {{ aviso.unidad_medida }}</td>
                         <td>
-                            {{ aviso.nombre }}<br>
-                            {% if aviso.celular %}
-                                Tel: {{ aviso.celular }}
-                            {% else %}
-                                correo: {{ aviso.email }}
-                            {% endif %}
+                            {{ aviso.nombre }}<br>correo: {{ aviso.email }}
                         </td>
                         <td>
                             <img src="{{ aviso.path_image }}" alt="Foto de adopción" width="200">
@@ -43,4 +38,23 @@
             </tbody>
         </table>
     </div>
+
+    {% if page > 1 %}
+        <form method="get" action="{{ url_for('listado') }}" style="display:inline;">
+            <input type="hidden" name="page" value="{{ page-1 }}">
+            <button type="submit">Anterior</button>
+        </form>
+        {% endif %}
+
+        <span>Página {{ page }} de {{ total_pages }}</span>
+
+        {% if page < total_pages %}
+        <form method="get" action="{{ url_for('listado') }}" style="display:inline;">
+            <input type="hidden" name="page" value="{{ page+1 }}">
+            <button type="submit">Siguiente</button>
+        </form>
+        {% endif %}
+    <form action="{{ url_for('index') }}">
+        <button id="portada-btn" type="submit">Volver a la portada</button>
+    </form>
 {% endblock %}

@@ -7,7 +7,7 @@
         <form action="{{ url_for('formulario') }}">
             <button id="publicar-btn" type="submit">Publicar nuevo aviso</button>
         </form>
-        <form action="{{ url_for('listado') }}">
+        <form action="{{ url_for('listado', page=1) }}">
             <button id="listado-btn" type="submit">Listado de adopciones</button>
         </form>
         <form action="{{ url_for('estadisticas') }}">

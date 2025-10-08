@@ -42,11 +42,6 @@ const poblarSelect = (data, select) => {
     }
 };
 
-const mostrarSeleccion = () => {
-    const select = document.getElementById("frutas");
-    const seleccionados = Array.from(select.selectedOptions).map(option => option.value);
-    alert("Seleccionaste: " + seleccionados.join(", "));
-};
 
 const updateComunas = () => {
     let regionSelect = document.getElementById("select-region");
@@ -98,12 +93,6 @@ function changeContactos() {
 }
 
 
-const foto1 = document.getElementById("foto1");
-const foto2 = document.getElementById("foto2");
-const foto3 = document.getElementById("foto3");
-const foto4 = document.getElementById("foto4");
-const foto5 = document.getElementById("foto5");
-
 function mostrarSiguienteInput(actual, siguiente) {
     actual.addEventListener('change', () => {
         if (actual.files.length > 0) {
@@ -111,24 +100,30 @@ function mostrarSiguienteInput(actual, siguiente) {
         }
     });
 }
-mostrarSiguienteInput(foto1, foto2);
-mostrarSiguienteInput(foto2, foto3);
-mostrarSiguienteInput(foto3, foto4);
-mostrarSiguienteInput(foto4, foto5);
 
 
 let fechaAMostrar = new Date();
-fechaAMostrar.setHours(fechaAMostrar.getHours() - 1);
 const formattedDate = fechaAMostrar.toISOString().slice(0, 16);
 document.getElementById("entrega").value = formattedDate;
 
 
-document.getElementById("select-region").addEventListener("change", updateComunas);
-document.getElementById("select-contacto").addEventListener("change", changeContactos);
-
-window.onload = () => {
+document.addEventListener("DOMContentLoaded", () => {
     poblarSelect(tipo_mascota, "select-tipo");
     poblarSelect(medida_edad, "select-edad");
     poblarRegiones();
     changeContactos();
-};
+
+    document.getElementById("select-region").addEventListener("change", updateComunas);
+    document.getElementById("select-contacto").addEventListener("change", changeContactos);
+
+    const foto1 = document.getElementById("foto1");
+    const foto2 = document.getElementById("foto2");
+    const foto3 = document.getElementById("foto3");
+    const foto4 = document.getElementById("foto4");
+    const foto5 = document.getElementById("foto5");
+
+    mostrarSiguienteInput(foto1, foto2);
+    mostrarSiguienteInput(foto2, foto3);
+    mostrarSiguienteInput(foto3, foto4);
+    mostrarSiguienteInput(foto4, foto5);
+});
