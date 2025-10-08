@@ -55,6 +55,7 @@ def formulario():
 
 @app.route("/post-aviso", methods=["POST"])
 def enviar_formulario():
+
     foto1 = request.files.get("foto1")
     foto2 = request.files.get("foto2")
     foto3 = request.files.get("foto3")
@@ -83,7 +84,9 @@ def enviar_formulario():
     for contacto in contactos:
         contactos_values.append(request.form["contacto-"+contacto])
 
-    if validarAviso(comuna, sector, nombre, email, celular, tipo, cantidad, edad, unidad_medida, fecha_entrega, descripcion, fotos, contactos_values):
+    validacion = validarAviso(comuna, sector, nombre, email, celular, tipo, cantidad, edad, unidad_medida, fecha_entrega, descripcion, fotos, contactos_values)
+
+    if validacion[0]:
 
         newFotos = []
         for foto in fotos:
@@ -114,9 +117,9 @@ def enviar_formulario():
         
         for i in range(len(contactos)):
             db.create_contacto(contactos[i], contactos_values[i], aviso)
-        return redirect(url_for("index"))
+        return render_template("formulario/msj_final_formulario.html", mensaje = "Hemos recibido correctamente tus datos! Buena suerte con tu búsqueda.")
     else:
-        return redirect(url_for("formulario"))
+        return render_template("formulario/msj_final_formulario.html", mensaje = f"Falló la validación de los datos. Revisa tus datos e inténtalo nuevamnete. {validacion[1]}")
 
 
 @app.route("/listado", methods=["GET"])

@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<title>Formulario</title>
-    <link rel="stylesheet" type="text/css" href="../../CSS/style.css">
+    <title>Formulario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
 </head>
 <body>
     <div class="main-container">
         <div id="final-box">
-            <h2 id="final-msg">Hemos recibido la información de adopción, muchas gracias y suerte!</h2>
-            <button id="final-btn">Volver a la Portada</button>
+            <h2 id="final-msg">{{ mensaje }}</h2>
+            <form action="{{ url_for('index') }}">
+                <button id="final-btn" type="submit">Volver a la Portada</button>
+            </form>
+            <form action="{{ url_for('formulario') }}">
+                <button id="formulario" type="submit">Hacer otro formulario</button>
+            </form>
         </div>
     </div>
-    <script src="../../JS/formulario/msj_final_formulario.js"></script>
+    <script src="{{ url_for('static', filename='JS/formulario/msj_final_formulario.js') }}"></script>
 </body>
 </html>

@@ -47,8 +47,12 @@
     {% endfor %}
 
     <br><br>
-    <a href="{{ url_for('listado') }}"><button>Volver al listado</button></a>
-    <a href="{{ url_for('index') }}"><button>Volver a la portada</button></a>
+    <form action="{{ url_for('listado') }}">
+        <button id="listado-btn" type="submit">Volver al listado</button>
+    </form>
+    <form action="{{ url_for('index') }}">
+        <button id="portada-btn" type="submit">Volver a la portada</button>
+    </form>
     </div>
 </body>
 </html>
