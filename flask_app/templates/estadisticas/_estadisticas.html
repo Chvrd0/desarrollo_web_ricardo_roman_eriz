@@ -1,0 +1,27 @@
+{% extends "estadisticas/base.html" %}
+
+{% block title %}Estadísticas{% endblock %}
+
+{% block content %}
+<div class="stats">
+    <div class="grafico1">
+        <h2>Gráfico de la cantidad de avisos a lo largo del año</h2>
+        <img src="{{ url_for('static', filename='IMG/GraficoLineas.png') }}" alt="Gráfico 1" width="600">
+    </div>
+
+    <div class="grafico2">
+        <h2>Gráfico del porcentaje de tipos de mascotas de los avisos</h2>
+        <img src="{{ url_for('static', filename='IMG/GraficoTorta.png') }}" alt="Gráfico 2" width="600">
+    </div>
+
+    <div class="grafico3">
+        <h2>Gráfico de la cantidad de avisos mensualmente</h2>
+        <img src="{{ url_for('static', filename='IMG/GraficoBarras.png') }}" alt="Gráfico 3" width="600">
+    </div>
+
+    <br>
+    <form action="{{ url_for('index') }}">
+        <button id="stats-btn" type="submit">Volver a la portada</button>
+    </form>
+</div>
+{% endblock %}

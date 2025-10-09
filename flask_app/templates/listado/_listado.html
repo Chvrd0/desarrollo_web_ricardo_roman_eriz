@@ -1,0 +1,60 @@
+{% extends "listado/base.html" %}
+
+{% block title %}Listado de adopciones{% endblock %}
+
+{% block content %}
+    <div class="tabla" id="tabla-interactiva">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha de publicación</th>
+                    <th>Fecha de entrega</th>
+                    <th>Comuna</th>
+                    <th>Sector</th>
+                    <th>Cantidad Tipo <br>Edad</th>
+                    <th>Nombre <br> Contacto</th>
+                    <th>Foto</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {%if data %}
+                    {% for aviso in data %}
+                    <tr onclick="window.location='{{ url_for('detalles', id=aviso.id) }}'">
+                        <td>{{ aviso.fecha_ingreso }}</td>
+                        <td>{{ aviso.fecha_entrega }}</td>
+                        <td>{{ aviso.comuna }}</td>
+                        <td>{{ aviso.sector }}</td>
+                        <td>{{ aviso.cantidad }} {{ aviso.tipo }}<br>{{ aviso.edad }} {{ aviso.unidad_medida }}</td>
+                        <td>
+                            {{ aviso.nombre }}<br>correo: {{ aviso.email }}
+                        </td>
+                        <td>
+                            <img src="{{ aviso.path_image }}" alt="Foto de adopción" width="200">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if page > 1 %}
+        <form method="get" action="{{ url_for('listado') }}" style="display:inline;">
+            <input type="hidden" name="page" value="{{ page-1 }}">
+            <button type="submit">Anterior</button>
+        </form>
+        {% endif %}
+
+        <span>Página {{ page }} de {{ total_pages }}</span>
+
+        {% if page < total_pages %}
+        <form method="get" action="{{ url_for('listado') }}" style="display:inline;">
+            <input type="hidden" name="page" value="{{ page+1 }}">
+            <button type="submit">Siguiente</button>
+        </form>
+        {% endif %}
+    <form action="{{ url_for('index') }}">
+        <button id="portada-btn" type="submit">Volver a la portada</button>
+    </form>
+{% endblock %}

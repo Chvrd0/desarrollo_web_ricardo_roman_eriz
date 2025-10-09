@@ -1,0 +1,48 @@
+{% extends "portada/base.html" %}
+
+{% block title %}Portada{% endblock %}
+
+{% block content %}
+    <div class="botones">
+        <form action="{{ url_for('formulario') }}">
+            <button id="publicar-btn" type="submit">Publicar nuevo aviso</button>
+        </form>
+        <form action="{{ url_for('listado', page=1) }}">
+            <button id="listado-btn" type="submit">Listado de adopciones</button>
+        </form>
+        <form action="{{ url_for('estadisticas') }}">
+            <button id="stats-btn" type="submit">Estadísticas</button>
+        </form>
+    </div>
+    
+    <br>
+
+    <h2>Últimos avisos: </h2>
+    <div class="tabla">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha de publicación</th>
+                    <th>Comuna</th>
+                    <th>Sector</th>
+                    <th>Cantidad Tipo <br>Edad</th>
+                    <th>Foto</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% if data %}
+                {% for aviso in data%}
+                <tr>
+                    <td>{{ aviso.fecha_ingreso }}</td>
+                    <td>{{ aviso.comuna }}</td>
+                    <td>{{ aviso.sector }}</td>
+                    <td>{{ aviso.cantidad }} {{ aviso.tipo }}<br>{{ aviso.edad }} {{ aviso.unidad_medida }}</td>
+                    <td><img src="{{ aviso.path_image }}" alt="Foto" width="300"></td>
+                </tr>
+                {% endfor%}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

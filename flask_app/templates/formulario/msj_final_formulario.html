@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Formulario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <div id="final-box">
+            <h2 id="final-msg">{{ mensaje }}</h2>
+            <div class="botones">
+                <form action="{{ url_for('index') }}">
+                    <button id="final-btn" type="submit">Volver a la Portada</button>
+                </form>
+                <form action="{{ url_for('formulario') }}">
+                    <button id="formulario" type="submit">Hacer otro formulario</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='JS/formulario/msj_final_formulario.js') }}"></script>
+</body>
+</html>
