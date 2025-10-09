@@ -64,7 +64,7 @@ def validarAviso(comuna, sector, nombre, email, celular, tipo, cantidad, edad, u
     emailV = validate_email(email)
     if not emailV: msg += "Email inválido"
 
-    celularV = celular == "None" or validate_num(celular)
+    celularV = celular == "" or celular == None or validate_num(celular)
     if not celularV: msg += "Celular inválido"
 
     tipoV = validate_required(tipo)
