@@ -45,6 +45,20 @@
     {% for foto in fotos %}
         <img src="{{ url_for(foto.ruta_archivo, filename=foto.nombre_archivo) }}" alt="{{ aviso.nombre }} {{ loop.index }}">
     {% endfor %}
+    <br>
+    <div class="comentarios">
+        <h3>Comentarios: </h3>
+        <form name="nuevo_comentario">
+            <label for="c_nombre">Nombre</label><br>
+            <input type="text" name="c_nombre" id="c_nombre"><br>
+
+            <label for="c_texto">Comentario</label><br>
+            <textarea name="c_texto" id="c_texto" rows="4" cols="50"></textarea><br>
+            <button>Añadir comentario</button><br>
+        </form>
+
+    </div>
+
 
     <br><br>
     <div class="botones">

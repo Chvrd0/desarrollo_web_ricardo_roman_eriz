@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, jsonify
+from flask_cors import cross_origin
 from utils.validations import *
 from database import db
 from werkzeug.utils import secure_filename
@@ -6,6 +7,7 @@ import hashlib
 import filetype
 import os
 from datetime import datetime
+import random
 
 UPLOAD_FOLDER = 'static/uploads'
 
@@ -19,6 +21,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 # --- Routes ---
+#-------------------------Portada--------------------------------------------------------------------------------------
 @app.route("/", methods=["GET"])
 def index():
     data = []
@@ -48,6 +51,8 @@ def index():
     
     return render_template("portada/_portada.html", data=data)
 
+
+#-------------------------Formulario--------------------------------------------------------------------------------------
 @app.route("/nuevo-aviso", methods=["GET"])
 def formulario():
     return render_template("formulario/_formulario.html")
@@ -122,6 +127,8 @@ def enviar_formulario():
         return render_template("formulario/msj_final_formulario.html", mensaje = f"Falló la validación de los datos. Revisa tus datos e inténtalo nuevamnete. {validacion[1]}")
 
 
+
+#-------------------------Listado de Avisos--------------------------------------------------------------------------------------
 @app.route("/listado", methods=["GET"])
 def listado():
     page = int(request.args.get("page", 1))
@@ -164,10 +171,9 @@ def listado():
         })
     return render_template("listado/_listado.html", data=data, page=page, total_pages=total_pages)
 
-@app.route("/estadisticas", methods=["GET"])
-def estadisticas():
-    return render_template("estadisticas/_estadisticas.html")
 
+
+#-------------------------Aviso Detallado--------------------------------------------------------------------------------------
 @app.route("/aviso/<id>")
 def detalles(id):
     aviso = db.get_id(id, db.Aviso)
@@ -177,6 +183,51 @@ def detalles(id):
     region = db.get_id(comuna.region_id, db.Region)
 
     return render_template("listado/detalles_listado.html", aviso=aviso, fotos=fotos, contactos=contactos, comuna=comuna, region=region)
+
+@app.route("/aviso/<id>/comentarios/nuevo", methods=["POST"])
+def publicarComentario(id):
+    nombre=request.form["c_nombre"]
+    texto=request.form["c_texto"]
+    db.create_comm(nombre, texto, id)
+
+
+#-------------------------Estadisticas--------------------------------------------------------------------------------------
+@app.route("/estadisticas", methods=["GET"])
+def estadisticas():
+    return render_template("estadisticas/_estadisticas.html")
+
+@app.route("/get-line-data", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_line_stats():
+    """
+    Since we don't have that many confessions yet but we NEED to show off
+    our fancy new chart, we are going to generate some random data.
+    """
+    line_data = db.count_by_day()
+
+    data = [{
+        "dia": i.fecha_ingreso.strftime('%Y-%m-%d'),
+        "cantidad": i.cantidad
+    } for i in line_data]
+
+    return jsonify(data)
+
+@app.route("/get-pie-data", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_pie_stats():
+    """
+    Since we don't have that many confessions yet but we NEED to show off
+    our fancy new chart, we are going to generate some random data.
+    """
+    pie_data = db.count_by_type()
+
+    data = [{
+        "name": i.tipo.capitalize(),
+        "y": i.cantidad
+    } for i in pie_data]
+
+    return jsonify(data)
+
 
 
 if __name__ == "__main__":

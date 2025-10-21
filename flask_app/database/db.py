@@ -56,6 +56,7 @@ class Aviso(Base):
 
     fotos = relationship("Foto", back_populates="aviso", cascade="all, delete-orphan")
     contactos = relationship("ContactarPor", back_populates="aviso", cascade="all, delete-orphan")
+    comentarios = relationship("Comentario", back_populates="aviso", cascade="all, delete-orphan")
 
 class ContactarPor(Base):
     __tablename__ = "contactar_por"
@@ -75,6 +76,17 @@ class Foto(Base):
     aviso_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
 
     aviso = relationship("Aviso", back_populates="fotos")
+
+class Comentario(Base):
+    __tablename__ = "comentario"
+
+    id = Column(Integer, primary_key=True)
+    nombre = Column(String(80), nullable=False)
+    texto = Column(String(250), nullable=False)
+    fecha = Column(DateTime, nullable=False, default=func.now())
+    aviso_id = Column(Integer, ForeignKey("aviso_adopcion.id"), nullable=False)
+
+    aviso = relationship("Aviso", back_populates="comentarios")
 
 
 # --- Database Functions ---
@@ -157,8 +169,36 @@ def count(Tabla):
     session.close()
     return total
 
+def count_by_type():
+    session = SessionLocal()
+    total = session.query(Aviso.tipo, func.count(Aviso.id).label("cantidad")).group_by(Aviso.tipo).all()
+    session.close()
+    return total
+
+def count_by_day():
+    session = SessionLocal()
+    total = session.query(Aviso.fecha_ingreso, func.count(Aviso.id).label("cantidad")).group_by(Aviso.fecha_ingreso).order_by("cantidad").all()
+    session.close()
+    return total
+
+def count_by_month():
+    session = SessionLocal()
+    total = session.query(func.date_format(Aviso.fecha_ingreso, '%Y-%m').label("mes"), Aviso.tipo, func.count(Aviso.id).label("cantidad")).group_by("mes", Aviso.tipo).order_by("mes").all()
+    session.close()
+    return total
+
+
 def get_aviso_id(_id, Tabla):
     session = SessionLocal()
     info = session.query(Tabla).filter_by(aviso_id=_id).all()
     session.close()
     return info
+
+def create_comm(nombre, texto, aviso_id):
+    session = SessionLocal()
+    new_comm = Comentario(nombre = nombre, texto = texto, aviso_id = aviso_id)
+    session.add(new_comm)
+    session.commit()
+    session.refresh(new_comm)
+    aviso_id = new_comm.id
+    session.close()
