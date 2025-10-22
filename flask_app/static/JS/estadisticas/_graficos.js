@@ -78,7 +78,7 @@ Highcharts.chart('grafico-3', {
         text: 'Gráfico de Barras Múltiples', // Título del gráfico
     },
     xAxis: {
-        categories: [] // Se llenará con las etiquetas (por ejemplo, los meses)
+        categories: [] // Se llenará con las etiquetas (los meses)
     },
     yAxis: {
         min: 0, // Valor mínimo del eje Y
