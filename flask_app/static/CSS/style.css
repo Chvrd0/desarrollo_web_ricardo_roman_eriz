@@ -1,13 +1,16 @@
+/* ===========================================================
+    ESTILOS GENERALES
+=========================================================== */
 
 body {
-    font-family: Arial sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f9f9f9;
+    font-family: Arial, sans-serif; /* Fuente limpia y legible */
+    line-height: 1.6;               /* Altura de línea agradable */
+    color: #333;                    /* Color principal del texto */
+    background-color: #f9f9f9;      /* Fondo gris claro general */
     padding: 20px;
 }
 
-
+/* Contenedor principal centrado y con sombra */
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -16,6 +19,10 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
+
+/* ===========================================================
+    TÍTULO PRINCIPAL
+=========================================================== */
 
 .titulo {
     text-align: center;
@@ -30,10 +37,15 @@ body {
     font-size: 2.5rem;
 }
 
+/* ===========================================================
+    FORMULARIOS
+=========================================================== */
+
 form {
     margin-bottom: 30px;
 }
 
+/* Secciones del formulario (Dónde, Contacto, Mascota) */
 .donde, .contacto, .mascota {
     margin-bottom: 30px;
     padding: 20px;
@@ -42,6 +54,7 @@ form {
     background-color: #f8f9fa;
 }
 
+/* Títulos secundarios dentro de formularios */
 h2 {
     margin-bottom: 20px;
     color: #2575fc;
@@ -49,6 +62,7 @@ h2 {
     border-bottom: 2px solid #e1e1e1;
 }
 
+/* Etiquetas de los campos */
 label {
     display: inline-block;
     width: 200px;
@@ -57,6 +71,7 @@ label {
     vertical-align: top;
 }
 
+/* Campos de entrada y selects */
 input[type="text"],
 input[type="email"],
 input[type="tel"],
@@ -78,14 +93,20 @@ textarea {
     color: #333;
 }
 
+/* Campo para subir archivos */
 input[type="file"] {
     margin-top: 10px;
 }
 
+/* Campos de texto más altos */
 textarea {
     resize: vertical;
     min-height: 100px;
 }
+
+/* ===========================================================
+    BOTONES
+=========================================================== */
 
 button {
     background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
@@ -100,16 +121,22 @@ button {
     margin: 10px;
 }
 
+/* Efecto hover para botones */
 button:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Contenedor de botones centrado */
 .botones {
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
 }
+
+/* ===========================================================
+    SECCIÓN DE ESTADÍSTICAS / GRÁFICOS
+=========================================================== */
 
 .stats {
     text-align: center;
@@ -121,6 +148,7 @@ button:hover {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Imagen de estadísticas (por ejemplo, gráfico o portada) */
 .stats img {
     display: block;
     margin: 0 auto 25px auto;
@@ -130,6 +158,7 @@ button:hover {
     width: 640px;
 }
 
+/* Botón de envío principal del formulario */
 #submit-btn {
     display: block;
     margin: 30px auto;
@@ -137,10 +166,12 @@ button:hover {
     font-size: 18px;
 }
 
+/* ===========================================================
+    TABLAS DE DATOS
+=========================================================== */
 
-/* Estilos para tablas */
 .tabla {
-    overflow-x: auto;
+    overflow-x: auto; /* Permite scroll horizontal en pantallas pequeñas */
 }
 
 table {
@@ -154,6 +185,7 @@ table {
     overflow: hidden;
 }
 
+/* Cabecera de la tabla con degradado */
 thead tr {
     background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     color: white;
@@ -169,6 +201,7 @@ th {
     font-weight: bold;
 }
 
+/* Filas alternadas y efectos */
 tbody tr {
     border-bottom: 1px solid #e1e1e1;
 }
@@ -185,6 +218,7 @@ tbody tr:hover {
     background-color: #e9ecef;
 }
 
+/* Imágenes dentro de las tablas */
 td img {
     border-radius: 8px;
     transition: transform 0.3s ease;
@@ -193,6 +227,10 @@ td img {
 td img:hover {
     transform: scale(1.05);
 }
+
+/* ===========================================================
+    MENSAJES DE VALIDACIÓN Y FINALIZACIÓN
+=========================================================== */
 
 #val-box {
     background-color: #ffdddd;
@@ -221,6 +259,7 @@ td img:hover {
     border-radius: 4px;
 }
 
+/* Textos de mensajes */
 #final-msg {
     color: #ffffff;
     margin-bottom: 10px;
@@ -236,6 +275,9 @@ td img:hover {
     color: #d32f2f;
 }
 
+/* ===========================================================
+    PÁGINA DE DETALLES DE AVISO
+=========================================================== */
 
 .detalle-box {
     text-align: center;
@@ -271,6 +313,7 @@ td img:hover {
     width: 320px;
 }
 
+/* Lista de atributos del aviso */
 .detalle-box li {
     list-style-type: none;
     font-size: 1.3rem;
@@ -281,6 +324,7 @@ td img:hover {
     line-height: 1.6;
 }
 
+/* Punto decorativo violeta antes de cada ítem */
 .detalle-box li:before {
     content: "•";
     color: #6a11cb;
@@ -291,6 +335,7 @@ td img:hover {
     font-size: 1.5rem;
 }
 
+/* Contenedor de botones en los detalles */
 .botones-detalle {
     display: flex;
     justify-content: center; 
@@ -302,13 +347,16 @@ td img:hover {
     justify-content: center;
 }
 
+/* ===========================================================
+    DISEÑO RESPONSIVE (para pantallas chicas)
+=========================================================== */
 
 @media (max-width: 768px) {
     label {
         width: 100%;
         display: block;
     }
-    
+
     input[type="text"],
     input[type="email"],
     input[type="tel"],
@@ -318,21 +366,25 @@ td img:hover {
     textarea {
         width: 100%;
     }
-    
+
     .botones {
         flex-direction: column;
         align-items: center;
     }
-    
+
     button {
         width: 80%;
         margin: 10px 0;
     }
-    
+
     .main-container {
         padding: 15px;
     }
 }
+
+/* ===========================================================
+    EFECTOS DE ENFOQUE Y VALIDACIÓN DE CAMPOS
+=========================================================== */
 
 select:focus,
 input:focus,
@@ -342,6 +394,7 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
 }
 
+/* Bordes verdes o rojos según validez */
 input:valid, select:valid {
     border-left: 3px solid #4CAF50;
 }
@@ -350,10 +403,14 @@ input:invalid, select:invalid {
     border-left: 3px solid #f44336;
 }
 
+/* ===========================================================
+    SECCIÓN DE COMENTARIOS
+    =========================================================== */
+
+/* Cada comentario (contenedor principal) */
 .comentario-item {
     display: grid;
     grid-template-columns: 1fr 3fr;
-    
     gap: 20px;
     padding: 15px;
     margin-bottom: 12px;
@@ -362,7 +419,7 @@ input:invalid, select:invalid {
     border: 1px solid #e0e0e0;
 }
 
-
+/* Información del autor y fecha */
 .comentario-info {
     display: flex;
     flex-direction: column; 
@@ -381,14 +438,14 @@ input:invalid, select:invalid {
     margin-top: 5px;
 }
 
-
+/* Texto del comentario */
 .comentario-texto p {
     margin: 0; 
     line-height: 1.5;
     word-wrap: break-word;
 }
 
-/* Opcional: un poco de espacio sobre la lista de comentarios */
+/* Espacio superior de la lista de comentarios */
 #lista-comentarios {
     margin-top: 25px;
 }

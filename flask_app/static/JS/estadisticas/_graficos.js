@@ -1,147 +1,176 @@
-// Gráfico 1: Cantidad de avisos publicados por día (Gráfico de líneas)
+// ============================
+// Gráfico 1: Avisos publicados por día (línea)
+// ============================
+
+// Se crea un gráfico con Highcharts dentro del elemento HTML con id="grafico-1"
 Highcharts.chart("grafico-1", {
     chart: {
-        type: "line",
+        type: "line", // Tipo de gráfico: línea
     },
     title: {
-        text: "Numero de Avisos Enviados en el Tiempo",
+        text: "Numero de Avisos Enviados en el Tiempo", // Título del gráfico
     },
     xAxis: {
-        type: "datetime",
+        type: "datetime", // El eje X representa fechas
         dateTimeLabelFormats: {
-        month: "%b %e, %Y",
+            month: "%b %e, %Y", // Formato para mostrar fechas (Ej: Oct 21, 2025)
         },
         title: {
-        text: "Fecha",
+            text: "Fecha", // Título del eje X
         },
     },
     yAxis: {
         title: {
-        text: "Numero de Avisos",
+            text: "Numero de Avisos", // Título del eje Y
         },
     },
     legend: {
         align: "left",
         verticalAlign: "top",
-        borderWidth: 0,
+        borderWidth: 0, // Quita el borde de la leyenda
     },
-
     tooltip: {
-        shared: true,
-        crosshairs: true,
+        shared: true, // Muestra tooltip compartido al pasar el mouse
+        crosshairs: true, // Muestra una línea cruzada en los ejes
     },
-
     series: [
         {
-        name: "Avisos",
-        data: [],
-        lineWidth: 1,
-        marker: {
-            enabled: true,
-            radius: 4,
-        },
-        color: "#FC2865",
+            name: "Avisos", // Nombre de la serie
+            data: [], // Se deja vacío inicialmente (se llenará con fetch)
+            lineWidth: 1, // Grosor de la línea
+            marker: {
+                enabled: true, // Habilita los puntos sobre la línea
+                radius: 4, // Tamaño de los puntos
+            },
+            color: "#FC2865", // Color de la línea
         },
     ],
 });
 
-// Gráfico 2: Porcentaje de avisos de cada tipo (Gráfico de torta)
+
+// ============================
+// Gráfico 2: Porcentaje de avisos por tipo (torta)
+// ============================
+
 Highcharts.chart('grafico-2', {
     chart: {
-        type: 'pie'
+        type: 'pie', // Tipo de gráfico: torta o pastel
     },
     title: {
-        text: 'Porcentaje de Avisos por Tipo'
+        text: 'Porcentaje de Avisos por Tipo', // Título del gráfico
     },
     series: [{
-        name: 'Tipos de Avisos',
-        data: []
+        name: 'Tipos de Avisos', // Nombre de la serie
+        data: [] // Se completará con los datos del servidor
     }]
 });
 
-// Gráfico 3: Cantidad de avisos por mes y tipo (Gráfico de barras)
+
+// ============================
+// Gráfico 3: Cantidad de avisos por mes y tipo (barras)
+// ============================
+
 Highcharts.chart('grafico-3', {
     chart: {
-        type: 'bar'
+        type: 'bar', // Tipo de gráfico: barras horizontales
     },
     title: {
-        text: 'Gráfico de Barras Múltiples'
+        text: 'Gráfico de Barras Múltiples', // Título del gráfico
     },
     xAxis: {
-        categories: []
+        categories: [] // Se llenará con las etiquetas (por ejemplo, los meses)
     },
     yAxis: {
-        min: 0,
+        min: 0, // Valor mínimo del eje Y
         title: {
-            text: 'Valores'
+            text: 'Valores' // Título del eje Y
         }
     },
-    series: []
+    series: [] // Se llenará con los distintos tipos de avisos
 });
 
 
+// ============================
+// PETICIÓN 1: Datos del gráfico de líneas
+// ============================
+
+// Se solicita al backend Flask la información en formato JSON
 fetch("http://127.0.0.1:5000/get-line-data")
-    .then((response) => response.json())
+    .then((response) => response.json()) // Se convierte la respuesta a JSON
     .then((data) => {
+        // El backend envía una lista de objetos { dia: "YYYY-MM-DD", cantidad: N }
         let parsedData = data.map((item) => {
-        const [year, month, day] = item.dia
-            .split("-")
-            .map((part) => parseInt(part, 10));
-        return [
-            Date.UTC(year, month - 1, day), // javascript month indices start from 0 !
-            item.cantidad,
-        ];
+            // Se separa el año, mes y día de la fecha
+            const [year, month, day] = item.dia
+                .split("-")
+                .map((part) => parseInt(part, 10));
+
+            // Highcharts usa timestamps en milisegundos => Date.UTC convierte a ese formato
+            return [
+                Date.UTC(year, month - 1, day), // El mes se resta 1 (enero = 0)
+                item.cantidad, // Valor correspondiente al día
+            ];
         });
 
-        // Get the chart by ID
+        // Se busca el gráfico correspondiente a "grafico-1"
         const chart = Highcharts.charts.find(
-        (chart) => chart && chart.renderTo.id === "grafico-1"
+            (chart) => chart && chart.renderTo.id === "grafico-1"
         );
 
-        // Update the chart with new data
+        // Se actualiza el gráfico con los nuevos datos
         chart.update({
             series: [
                 {
-                data: parsedData,
+                    data: parsedData, // Se insertan los datos formateados
                 },
             ],
         });
     })
-    .catch((error) => console.error("Error:", error));
+    .catch((error) => console.error("Error:", error)); // Si hay error en el fetch, se muestra en consola
+
+
+// ============================
+// PETICIÓN 2: Datos del gráfico de torta
+// ============================
 
 fetch("http://127.0.0.1:5000/get-pie-data")
-    .then((response) => response.json())
+    .then((response) => response.json()) // Convierte respuesta a JSON
     .then((data) => {
-        // Get the chart by ID
+        // Se busca el gráfico de torta
         const chart = Highcharts.charts.find(
-        (chart) => chart && chart.renderTo.id === "grafico-2"
+            (chart) => chart && chart.renderTo.id === "grafico-2"
         );
 
-        // Update the chart with new data
+        // Se actualiza el gráfico con los datos obtenidos
         chart.update({
             series: [
                 {
-                data: data,
+                    data: data, // Lista de pares [tipo, porcentaje]
                 },
             ],
         });
     })
-    .catch((error) => console.error("Error:", error));
+    .catch((error) => console.error("Error:", error)); // Manejo de error
+
+
+// ============================
+// PETICIÓN 3: Datos del gráfico de barras
+// ============================
 
 fetch("http://127.0.0.1:5000/get-bar-data") 
-    .then((response) => response.json())
+    .then((response) => response.json()) // Convierte respuesta a JSON
     .then((data) => {
-        // Get the chart by ID
+        // Se busca el gráfico de barras
         const chart = Highcharts.charts.find(
             (chart) => chart && chart.renderTo.id === "grafico-3"
         );
         
-
+        // Se actualiza el gráfico con los datos del servidor
         chart.update({
             xAxis: {
-                categories: data.labels,
+                categories: data.labels, // Etiquetas del eje X (por ejemplo, meses)
             },
-            series: data.series,
+            series: data.series, // Conjunto de series (por ejemplo, tipoA, tipoB, tipoC)
         });
     })
-    .catch((error) => console.error("Error:", error));
+    .catch((error) => console.error("Error:", error)); // Manejo de error
