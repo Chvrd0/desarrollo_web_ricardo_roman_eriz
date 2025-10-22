@@ -88,6 +88,14 @@ class Comentario(Base):
 
     aviso = relationship("Aviso", back_populates="comentarios")
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'nombre': self.nombre,
+            'texto': self.texto,
+            'fecha': self.fecha.strftime("%Y-%m-%d %H:%M")
+        }
+
 
 # --- Database Functions ---
 def get_id(id, Tabla):
@@ -200,5 +208,6 @@ def create_comm(nombre, texto, aviso_id):
     session.add(new_comm)
     session.commit()
     session.refresh(new_comm)
-    aviso_id = new_comm.id
+    dict_comm = new_comm.to_dict()
     session.close()
+    return dict_comm

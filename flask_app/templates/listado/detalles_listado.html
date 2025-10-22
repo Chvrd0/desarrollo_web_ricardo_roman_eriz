@@ -48,13 +48,21 @@
     <br>
     <div class="comentarios">
         <h3>Comentarios: </h3>
-        <form name="nuevo_comentario">
+        <div id="lista-comentarios">
+        </div>
+
+        <form name="nuevo_comentario" id="form-comentario" data-aviso-id="{{ aviso.id }}">
+            <div id="val-box" hidden>
+                <h2 id="val-msg"></h2>
+                <ul id="val-list"></ul>
+            </div>
             <label for="c_nombre">Nombre</label><br>
             <input type="text" name="c_nombre" id="c_nombre"><br>
 
             <label for="c_texto">Comentario</label><br>
             <textarea name="c_texto" id="c_texto" rows="4" cols="50"></textarea><br>
-            <button>Añadir comentario</button><br>
+            
+            <button id="c_enviar" type="submit">Añadir comentario</button><br>
         </form>
 
     </div>
@@ -70,5 +78,7 @@
         </form>
     </div>
     </div>
+
+<script lang="javascript" src="{{ url_for('static', filename='JS/listado/detalles_listado.js') }}"></script>
 </body>
 </html>

@@ -59,6 +59,25 @@ Highcharts.chart('grafico-2', {
     }]
 });
 
+// Gráfico 3: Cantidad de avisos por mes y tipo (Gráfico de barras)
+Highcharts.chart('grafico-3', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: 'Gráfico de Barras Múltiples'
+    },
+    xAxis: {
+        categories: []
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Valores'
+        }
+    },
+    series: []
+});
 
 
 fetch("http://127.0.0.1:5000/get-line-data")
@@ -105,6 +124,24 @@ fetch("http://127.0.0.1:5000/get-pie-data")
                 data: data,
                 },
             ],
+        });
+    })
+    .catch((error) => console.error("Error:", error));
+
+fetch("http://127.0.0.1:5000/get-bar-data") 
+    .then((response) => response.json())
+    .then((data) => {
+        // Get the chart by ID
+        const chart = Highcharts.charts.find(
+            (chart) => chart && chart.renderTo.id === "grafico-3"
+        );
+        
+
+        chart.update({
+            xAxis: {
+                categories: data.labels,
+            },
+            series: data.series,
         });
     })
     .catch((error) => console.error("Error:", error));

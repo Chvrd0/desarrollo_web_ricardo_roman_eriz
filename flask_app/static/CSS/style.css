@@ -349,3 +349,46 @@ input:valid, select:valid {
 input:invalid, select:invalid {
     border-left: 3px solid #f44336;
 }
+
+.comentario-item {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    
+    gap: 20px;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    border: 1px solid #e0e0e0;
+}
+
+
+.comentario-info {
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start;
+    font-size: 0.9em;
+}
+
+.comentario-info strong {
+    font-size: 1.1em;
+    color: #0056b3; 
+    font-weight: 600;
+}
+
+.comentario-info small {
+    color: #666; 
+    margin-top: 5px;
+}
+
+
+.comentario-texto p {
+    margin: 0; 
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+/* Opcional: un poco de espacio sobre la lista de comentarios */
+#lista-comentarios {
+    margin-top: 25px;
+}

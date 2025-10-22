@@ -22,6 +22,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # --- Routes ---
 #-------------------------Portada--------------------------------------------------------------------------------------
+# Renderizar la pestaña inicial, con la información de los últimos 5 avisos.
 @app.route("/", methods=["GET"])
 def index():
     data = []
@@ -53,11 +54,12 @@ def index():
 
 
 #-------------------------Formulario--------------------------------------------------------------------------------------
+# Renderizar la pestaña para el formulario:
 @app.route("/nuevo-aviso", methods=["GET"])
 def formulario():
     return render_template("formulario/_formulario.html")
 
-
+# Publicar el nuevo aviso:
 @app.route("/post-aviso", methods=["POST"])
 def enviar_formulario():
 
@@ -129,6 +131,7 @@ def enviar_formulario():
 
 
 #-------------------------Listado de Avisos--------------------------------------------------------------------------------------
+# Renderizar la pestaña del listado de los avisos, con la información de los avisos.
 @app.route("/listado", methods=["GET"])
 def listado():
     page = int(request.args.get("page", 1))
@@ -174,6 +177,7 @@ def listado():
 
 
 #-------------------------Aviso Detallado--------------------------------------------------------------------------------------
+# Renderizar la pestaña de un aviso en particular:
 @app.route("/aviso/<id>")
 def detalles(id):
     aviso = db.get_id(id, db.Aviso)
@@ -184,25 +188,43 @@ def detalles(id):
 
     return render_template("listado/detalles_listado.html", aviso=aviso, fotos=fotos, contactos=contactos, comuna=comuna, region=region)
 
-@app.route("/aviso/<id>/comentarios/nuevo", methods=["POST"])
+# Obtener asincrónicamente los comentarios de este aviso.
+@app.route("/aviso/<id>/comentarios", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_comentarios(id):
+    comentarios = db.get_aviso_id(id, db.Comentario)
+    data = [i.to_dict() for i in comentarios]
+    return data
+
+# Publicar asincrónicamente un nuevo comentario.
+@app.route("/aviso/<id>/nuevo_comentario", methods=["POST"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
 def publicarComentario(id):
-    nombre=request.form["c_nombre"]
-    texto=request.form["c_texto"]
-    db.create_comm(nombre, texto, id)
+    data = request.get_json()
+
+    if not data:
+        return jsonify({'error': 'Faltan datos'})
+    
+    nombre = data['c_nombre']
+    texto = data['c_texto']
+    if validate_length(nombre, 3, 80) and validate_length(texto, 5, float('inf')):
+        nuevo_comentario = db.create_comm(nombre, texto, id)
+        return jsonify(nuevo_comentario)
+    
+    return jsonify({'error': 'Faltan datos'})
+
 
 
 #-------------------------Estadisticas--------------------------------------------------------------------------------------
+# Renderizar la pestaña de las estadísticas.
 @app.route("/estadisticas", methods=["GET"])
 def estadisticas():
     return render_template("estadisticas/_estadisticas.html")
 
+# Obtener de forma asíncrona los datos para el gráfico 1 (Cantida de avisos por día):
 @app.route("/get-line-data", methods=["GET"])
 @cross_origin(origin="127.0.0.1", supports_credentials=True)
 def get_line_stats():
-    """
-    Since we don't have that many confessions yet but we NEED to show off
-    our fancy new chart, we are going to generate some random data.
-    """
     line_data = db.count_by_day()
 
     data = [{
@@ -212,13 +234,10 @@ def get_line_stats():
 
     return jsonify(data)
 
+# Obtener de forma asíncrona los datos para el gráfico 2 (Cantidad de avisos por tipo de mascota):
 @app.route("/get-pie-data", methods=["GET"])
 @cross_origin(origin="127.0.0.1", supports_credentials=True)
 def get_pie_stats():
-    """
-    Since we don't have that many confessions yet but we NEED to show off
-    our fancy new chart, we are going to generate some random data.
-    """
     pie_data = db.count_by_type()
 
     data = [{
@@ -228,7 +247,43 @@ def get_pie_stats():
 
     return jsonify(data)
 
+# Obtener de forma asíncrona los datos para el gráfico 3 (Cantidad de avisos mensuales por tipo de mascota):
+@app.route("/get-bar-data", methods=["GET"])
+@cross_origin(origin="127.0.0.1", supports_credentials=True)
+def get_bar_stats():
+    bar_data = db.count_by_month()
+    data_procesada = {}
+    tipos_animales = set() # Para saber qué tipos hay (ej. 'perro', 'gato')
+    
+    for row in bar_data:
+        mes = row.mes
+        tipo = row.tipo
+        cantidad = row.cantidad
+        
+        if mes not in data_procesada:
+            data_procesada[mes] = {}
+        
+        data_procesada[mes][tipo] = cantidad
+        tipos_animales.add(tipo)
 
+    # Ahora formateamos para Highcharts
+    labels = sorted(data_procesada.keys()) # Meses ordenados: ['2025-09', '2025-10']
+    series = []
+    
+    for tipo in sorted(list(tipos_animales)):
+        # Para cada tipo (perro, gato), creamos su lista de datos
+        datos_tipo = []
+        for mes in labels:
+            # Añade la cantidad si existe, o 0 si no hubo en ese mes
+            datos_tipo.append(data_procesada[mes].get(tipo, 0))
+            
+        series.append({
+            'name': tipo.capitalize(),
+            'data': datos_tipo
+        })
+
+    # El JSON final tendrá las etiquetas (meses) y las series (datos de perros, datos de gatos)
+    return jsonify({'labels': labels, 'series': series})
 
 if __name__ == "__main__":
     app.run(debug=True)
