@@ -72,21 +72,27 @@ Highcharts.chart('grafico-2', {
 
 Highcharts.chart('grafico-3', {
     chart: {
-        type: 'bar', // Tipo de gráfico: barras horizontales
+        type: 'column'
     },
     title: {
-        text: 'Gráfico de Barras Múltiples', // Título del gráfico
+        text: 'Cantidad de Anuncios de Mascotas por Mes'
     },
     xAxis: {
-        categories: [] // Se llenará con las etiquetas (los meses)
+        categories: []
     },
     yAxis: {
-        min: 0, // Valor mínimo del eje Y
+        min: 0,
         title: {
-            text: 'Valores' // Título del eje Y
+            text: 'Cantidad de Anuncios'
         }
     },
-    series: [] // Se llenará con los distintos tipos de avisos
+    series: [{
+        name: 'Perros',
+        data: [10, 15]
+    }, {
+        name: 'Gatos',
+        data: [5, 7]
+    }]
 });
 
 
@@ -99,6 +105,7 @@ fetch("http://127.0.0.1:5000/get-line-data")
     .then((response) => response.json()) // Se convierte la respuesta a JSON
     .then((data) => {
         // El backend envía una lista de objetos { dia: "YYYY-MM-DD", cantidad: N }
+        console.log(data);
         let parsedData = data.map((item) => {
             // Se separa el año, mes y día de la fecha
             const [year, month, day] = item.dia
@@ -111,6 +118,7 @@ fetch("http://127.0.0.1:5000/get-line-data")
                 item.cantidad, // Valor correspondiente al día
             ];
         });
+        console.log(parsedData);
 
         // Se busca el gráfico correspondiente a "grafico-1"
         const chart = Highcharts.charts.find(
@@ -136,6 +144,7 @@ fetch("http://127.0.0.1:5000/get-line-data")
 fetch("http://127.0.0.1:5000/get-pie-data")
     .then((response) => response.json()) // Convierte respuesta a JSON
     .then((data) => {
+        console.log(data);
         // Se busca el gráfico de torta
         const chart = Highcharts.charts.find(
             (chart) => chart && chart.renderTo.id === "grafico-2"
@@ -160,6 +169,7 @@ fetch("http://127.0.0.1:5000/get-pie-data")
 fetch("http://127.0.0.1:5000/get-bar-data") 
     .then((response) => response.json()) // Convierte respuesta a JSON
     .then((data) => {
+        console.log(data.series);
         // Se busca el gráfico de barras
         const chart = Highcharts.charts.find(
             (chart) => chart && chart.renderTo.id === "grafico-3"
@@ -168,9 +178,9 @@ fetch("http://127.0.0.1:5000/get-bar-data")
         // Se actualiza el gráfico con los datos del servidor
         chart.update({
             xAxis: {
-                categories: data.labels, // Etiquetas del eje X (por ejemplo, meses)
+                categories: data.labels // Etiquetas del eje X (por ejemplo, meses)
             },
-            series: data.series, // Conjunto de series (por ejemplo, tipoA, tipoB, tipoC)
+            series: data.series // Conjunto de series 
         });
     })
     .catch((error) => console.error("Error:", error)); // Manejo de error

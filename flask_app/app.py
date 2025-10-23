@@ -293,7 +293,7 @@ def get_pie_stats():
 def get_bar_stats():
     bar_data = db.count_by_month()
     data_procesada = {}
-    tipos_animales = set()  # Conjunto para identificar tipos ('perro', 'gato')
+    tipos_animales = []  # Conjunto para identificar tipos ('perro', 'gato')
 
     # Procesamiento de datos
     for row in bar_data:
@@ -301,14 +301,15 @@ def get_bar_stats():
         if mes not in data_procesada:
             data_procesada[mes] = {}
         data_procesada[mes][tipo] = cantidad
-        tipos_animales.add(tipo)
+        if tipo not in tipos_animales:
+            tipos_animales.append(tipo)
 
     # Ejes X (meses)
     labels = sorted(data_procesada.keys())
     series = []
 
     # Eje Y (series por tipo de animal)
-    for tipo in sorted(list(tipos_animales)):
+    for tipo in tipos_animales:
         datos_tipo = [data_procesada[mes].get(tipo, 0) for mes in labels]
         series.append({
             'name': tipo.capitalize(),
