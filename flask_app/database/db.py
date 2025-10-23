@@ -248,9 +248,9 @@ def count_by_type():
 def count_by_day():
     session = SessionLocal()
     total = session.query(
-        Aviso.fecha_ingreso,
+        func.date_format(Aviso.fecha_ingreso, '%Y-%m-%d').label("dia"),
         func.count(Aviso.id).label("cantidad")
-    ).group_by(Aviso.fecha_ingreso).order_by("cantidad").all()
+    ).group_by("dia").order_by("cantidad").all()
     session.close()
     return total
 

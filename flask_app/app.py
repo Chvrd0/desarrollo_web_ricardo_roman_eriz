@@ -268,10 +268,12 @@ def estadisticas():
 @cross_origin(origin="127.0.0.1", supports_credentials=True)
 def get_line_stats():
     line_data = db.count_by_day()
+    print(line_data)
     data = [{
-        "dia": i.fecha_ingreso.strftime('%Y-%m-%d'),
+        "dia": i.dia,
         "cantidad": i.cantidad
     } for i in line_data]
+    print(data)
     return jsonify(data)
 
 

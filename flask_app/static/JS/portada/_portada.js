@@ -1,14 +1,17 @@
-let formulario = document.getElementById("crear_aviso");
+let formulario = document.getElementById("publicar-btn");
 formulario.addEventListener("click", () => {
-            window.location.href = "../../HTML/formulario/_formulario.html"
+            let portada_formulario = document.forms["p_formulario"];
+            portada_formulario.submit();
         });
 
-let listado = document.getElementById("listado");
+let listado = document.getElementById("listado-btn");
 listado.addEventListener("click", () => {
-            window.location.href = "../../HTML/listado/_listado.html"
+            let portada_listado = document.forms["p_listado"];
+            portada_listado.submit();
         });
 
-let stats = document.getElementById("estadisticas");
+let stats = document.getElementById("stats-btn");
 stats.addEventListener("click", () => {
-            window.location.href = "../../HTML/estadisticas/_estadisticas.html"
+            let portada_estadisticas = document.forms["p_estadisticas"];
+            portada_estadisticas.submit();
         });
