@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de adopciones</title>
+
+    <link rel="stylesheet" th:href="@{/CSS/style.css}">
+</head>
+<body>
+    <header>
+        <div class="titulo">
+            <h1>Listado de Adopciones</h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="tabla" id="tabla-interactiva">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha de publicación</th>
+                        <th>Fecha de entrega</th>
+                        <th>Comuna</th>
+                        <th>Sector</th>
+                        <th>Cantidad Tipo <br>Edad</th>
+                        <th>Nombre <br> Contacto</th>
+                        <th>Foto</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <th:block th:if="${data != null and !data.isEmpty()}">
+
+                        <tr th:each="aviso : ${data}" 
+                            th:onclick="|window.location='@{/detalles(id=${aviso.id})}'|"
+                            style="cursor: pointer;">
+                            
+                            <td th:text="${aviso.fecha_ingreso}"></td>
+                            <td th:text="${aviso.fecha_entrega}"></td>
+                            <td th:text="${aviso.comuna}"></td>
+                            <td th:text="${aviso.sector}"></td>
+                            <td>
+
+                                [[${aviso.cantidad}]] [[${aviso.tipo}]]<br>
+                                [[${aviso.edad}]] [[${aviso.unidad_medida}]]
+                            </td>
+                            <td>
+                                [[${aviso.nombre}]]<br>
+                                correo: [[${aviso.email}]]
+                            </td>
+                            <td>
+
+                                <img th:src="@{${aviso.path_image}}" alt="Foto de adopción" width="200">
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación: Botón Anterior -->
+        <th:block th:if="${page > 1}">
+            <form method="get" th:action="@{/listado}" style="display:inline;">
+                <input type="hidden" name="page" th:value="${page - 1}">
+                <button type="submit">Anterior</button>
+            </form>
+        </th:block>
+
+        <!-- Texto de Paginación -->
+        <span>Página [[${page}]] de [[${total_pages}]]</span>
+
+        <!-- Paginación: Botón Siguiente -->
+        <th:block th:if="${page < total_pages}">
+            <form method="get" th:action="@{/listado}" style="display:inline;">
+                <input type="hidden" name="page" th:value="${page + 1}">
+                <button type="submit">Siguiente</button>
+            </form>
+        </th:block>
+
+        <!-- Botón Volver -->
+        <form th:action="@{/}">
+            <button id="portada-btn" type="submit">Volver a la portada</button>
+        </form>
+    </main>
+
+</body>
+</html>

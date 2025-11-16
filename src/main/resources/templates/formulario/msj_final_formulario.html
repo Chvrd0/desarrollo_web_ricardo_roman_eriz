@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario</title>
+
+    <link rel="stylesheet" th:href="@{/CSS/style.css}">
+</head>
+<body>
+    <div class="main-container">
+        <div id="final-box">
+
+            <h2 id="final-msg" th:text="${mensaje}">Mensaje del servidor...</h2>
+            
+            <div class="botones">
+                <!-- Acción para volver al inicio -->
+                <form name="f_portada" th:action="@{/}">
+                    <button id="final-btn" type="submit">Volver a la portada</button>
+                </form>
+                
+                <!-- Acción para cargar el formulario nuevamente -->
+                <form name="f_formulario" th:action="@{/formulario}">
+                    <button id="formulario" type="submit">Agregar otro aviso</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script th:src="@{/JS/formulario/msj_final_formulario.js}"></script>
+</body>
+</html>
