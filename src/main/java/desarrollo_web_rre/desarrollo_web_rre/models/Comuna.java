@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,14 +12,8 @@ import jakarta.validation.constraints.NotNull;
 public class Comuna {
 
     @Id
-    @SequenceGenerator(
-        name = "comuna_sequence",
-        sequenceName = "comuna_sequence",
-        allocationSize = 1
-    )
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "comuna_sequence"
+        strategy = GenerationType.IDENTITY
     )
     private Integer id;
 
@@ -28,7 +21,7 @@ public class Comuna {
     private String nombre;
 
     @NotNull
-    private Integer regionId; // referencia a Region (por ahora solo el id)
+    private Integer regionId;
 
     public Comuna() {
     }

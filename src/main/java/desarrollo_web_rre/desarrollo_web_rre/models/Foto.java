@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
+
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,14 +13,8 @@ import jakarta.validation.constraints.NotNull;
 public class Foto {
 
     @Id
-    @SequenceGenerator(
-        name = "foto_sequence",
-        sequenceName = "foto_sequence",
-        allocationSize = 1
-    )
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "foto_sequence"
+        strategy = GenerationType.IDENTITY
     )
     private Integer id;
 
@@ -31,12 +25,12 @@ public class Foto {
     private String nombreArchivo;
 
     @NotNull
-    private Long avisoId; // referencia a Aviso
+    private Integer avisoId; // referencia a Aviso
 
     public Foto() {
     }
 
-    public Foto(String rutaArchivo, String nombreArchivo, Long avisoId) {
+    public Foto(String rutaArchivo, String nombreArchivo, Integer avisoId) {
         this.rutaArchivo = rutaArchivo;
         this.nombreArchivo = nombreArchivo;
         this.avisoId = avisoId;
@@ -54,7 +48,7 @@ public class Foto {
         return nombreArchivo;
     }
 
-    public Long getAvisoId() {
+    public Integer getAvisoId() {
         return avisoId;
     }
 }

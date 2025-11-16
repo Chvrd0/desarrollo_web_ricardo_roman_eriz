@@ -6,23 +6,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+
 
 @Entity
 @Table
 public class Comentario {
 
     @Id
-    @SequenceGenerator(
-        name = "comentario_sequence",
-        sequenceName = "comentario_sequence",
-        allocationSize = 1
-    )
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "comentario_sequence"
+        strategy = GenerationType.IDENTITY
     )
     private Integer id;
 
@@ -36,12 +30,12 @@ public class Comentario {
     private LocalDateTime fecha;
 
     @NotNull
-    private Long avisoId; // referencia a Aviso
+    private Integer avisoId; // referencia a Aviso
 
     public Comentario() {
     }
 
-    public Comentario(String nombre, String texto, LocalDateTime fecha, Long avisoId) {
+    public Comentario(String nombre, String texto, LocalDateTime fecha, Integer avisoId) {
         this.nombre = nombre;
         this.texto = texto;
         this.fecha = fecha;
@@ -64,7 +58,7 @@ public class Comentario {
         return fecha;
     }
 
-    public Long getAvisoId() {
+    public Integer getAvisoId() {
         return avisoId;
     }
 }

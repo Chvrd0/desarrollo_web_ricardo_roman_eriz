@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface ContactarPorRepository extends JpaRepository<ContactarPor, Integer> {
 
     // Todas las formas de contacto asociadas a un aviso
-    List<ContactarPor> findAllByAvisoId(Long avisoId);
+    List<ContactarPor> findAllByAvisoId(Integer avisoId);
 }

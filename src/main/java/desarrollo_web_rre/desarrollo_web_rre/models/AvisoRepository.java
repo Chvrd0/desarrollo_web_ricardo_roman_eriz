@@ -6,8 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AvisoRepository extends JpaRepository<Aviso, Long> {
+public interface AvisoRepository extends JpaRepository<Aviso, Integer> {
 
-    // Equivalente a get_avisos: ordenado por fechaIngreso desc y paginado
     Page<Aviso> findAllByOrderByFechaIngresoDesc(Pageable pageable);
 }

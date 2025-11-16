@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface FotoRepository extends JpaRepository<Foto, Integer> {
 
     // Primera foto asociada a un aviso (por id del aviso)
-    Foto findFirstByAvisoIdOrderByIdAsc(Long avisoId);
-    List<Foto> findAllByAvisoIdOrderByIdAsc(Long avisoId);
+    Foto findFirstByAvisoIdOrderByIdAsc(Integer avisoId);
+    List<Foto> findAllByAvisoIdOrderByIdAsc(Integer avisoId);
 }

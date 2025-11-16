@@ -91,7 +91,7 @@ public class AppService {
             String pathImage = null;
             if (img != null) {
                 // archivo guardado en /static/uploads/<filename>
-                pathImage = "/uploads/" + img.getNombreArchivo();
+                pathImage = img.getRutaArchivo() + img.getNombreArchivo();
             }
 
             String um = "mes(es)";
@@ -170,10 +170,7 @@ public class AppService {
             }
         }
 
-        // TODO: aquí podrías llamar a Aviso.validateAviso(...) cuando lo implementes.
-        // if (!Aviso.validateAviso(...)) { ... }
 
-        // --- Guardar imágenes en /static/uploads con nombre único (SHA-256) ---
         List<String> savedFilenames = new ArrayList<>();
         Path uploadsDir = Paths.get(this.pathStatic, "uploads");
         if (!Files.exists(uploadsDir)) {
@@ -294,7 +291,7 @@ public class AppService {
             Foto img = fotoRepository.findFirstByAvisoIdOrderByIdAsc(aviso.getId());
             String pathImage = null;
             if (img != null) {
-                pathImage = "/uploads/" + img.getNombreArchivo();
+                pathImage = img.getRutaArchivo() + img.getNombreArchivo();
             }
 
             String um = "mes(es)";
@@ -333,7 +330,7 @@ public class AppService {
     // ================================
     // DETALLES de un aviso
     // ================================
-    public Map<String, Object> getDetallesAviso(Long id) {
+    public Map<String, Object> getDetallesAviso(Integer id) {
         Map<String, Object> result = new HashMap<>();
 
         Aviso aviso = avisoRepository.findById(id).orElse(null);

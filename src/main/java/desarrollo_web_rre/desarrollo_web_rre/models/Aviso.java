@@ -8,27 +8,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table
+@Table(name = "aviso_adopcion")
 public class Aviso {
 
     @Id
-    @SequenceGenerator(
-        name = "aviso_sequence",
-        sequenceName = "aviso_sequence",
-        allocationSize = 1
-    )
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "aviso_sequence"
+        strategy = GenerationType.IDENTITY
     )
-    private Long id;
+    private Integer id;
 
-    // Relación con COMUNA (por ahora solo el id, sin @ManyToOne ni nada raro)
     @NotNull
     private Integer comunaId;
 
@@ -59,7 +51,6 @@ public class Aviso {
 
     private String descripcion;
 
-    // Equivalente a fecha_ingreso de tu modelo Python
     private LocalDateTime fechaIngreso;
 
     public Aviso() {
@@ -93,7 +84,7 @@ public class Aviso {
         this.fechaIngreso = fechaIngreso;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -146,8 +137,6 @@ public class Aviso {
     }
 
     public static Boolean validateAviso(String descripcion, MultipartFile foto) {
-        // Ejercicio: implementar validación de avisos :)
-        // (por ahora lo dejamos igual que validateConfession)
         return true;
     }
 }

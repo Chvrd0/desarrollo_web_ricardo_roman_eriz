@@ -28,13 +28,10 @@ public class AppController {
     @GetMapping("/")
     public String indexRoute(Model model) {
 
-        // Equivalente a: db.get_avisos(5, 0) + armado de data en Flask
         List<Map<String, String>> modelData = appService.getPortadaData(5);
 
         model.addAttribute("data", modelData);
 
-        // Equivalente a render_template("portada/_portada.html", data=data)
-        // Ajusta el nombre del template según como lo tengas en Thymeleaf
         return "portada/_portada";
     }
 
@@ -43,8 +40,12 @@ public class AppController {
     // ================================
     @GetMapping("/nuevo-aviso")
     public String nuevoAvisoRoute() {
-        // Equivalente a render_template("formulario/_formulario.html")
         return "formulario/_formulario";
+    }
+
+    @GetMapping("/formulario-completo")
+    public String formularioCompletoRoute() {
+        return "formulario/msj_final_formulario";
     }
 
     // ================================
@@ -72,9 +73,8 @@ public class AppController {
         @RequestParam("entrega") String fechaEntrega,
         @RequestParam(value = "descripcion", required = false) String descripcion,
 
-        // Contactos (checkbox + inputs) – se procesan en el servicio
         @RequestParam(value = "select-contacto", required = false) List<String> contactos,
-        @RequestParam Map<String, String> allRequestParams  // para leer "contacto-xxx"
+        @RequestParam Map<String, String> allRequestParams
     ) throws Exception {
 
         appService.handlePostAviso(
@@ -85,9 +85,7 @@ public class AppController {
             contactos, allRequestParams
         );
 
-        // En Flask devolvías un template de mensaje final.
-        // Como base, dejamos un redirect a la portada (estilo confesiones).
-        return "redirect:/";
+        return "redirect:/formulario-completo";
     }
 
     // ================================
@@ -103,7 +101,6 @@ public class AppController {
             page = 1;
         }
 
-        // El servicio se encarga de hacer count, offset, etc.
         Map<String, Object> listadoData = appService.getListadoData(page);
 
         model.addAttribute("data", listadoData.get("data"));
@@ -118,7 +115,7 @@ public class AppController {
     // ================================
     @GetMapping("/aviso/{id}")
     public String detallesRoute(
-        @PathVariable("id") Long id,
+        @PathVariable("id") Integer id,
         Model model
     ) {
 
@@ -138,7 +135,6 @@ public class AppController {
     // ================================
     @GetMapping("/estadisticas")
     public String estadisticasRoute() {
-        // Igual que en Flask: render_template("estadisticas/_estadisticas.html")
         return "estadisticas/_estadisticas";
     }
 }

@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
     const loadComments = () => {
         // Se hace una solicitud GET al endpoint correspondiente
-        fetch(`http://127.0.0.1:5000/aviso/${avisoId}/comentarios`)
+        fetch(`/aviso/${avisoId}/comentarios`)
             .then(response => response.json())
             .then(comments => {
                 // Limpia el contenedor de comentarios antes de volver a llenarlo
@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             // Envío de datos al backend Flask (ruta POST)
-            fetch(`http://127.0.0.1:5000/aviso/${avisoId}/nuevo_comentario`, {
+            fetch(`/aviso/${avisoId}/nuevo_comentario`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json', // Se indica formato JSON

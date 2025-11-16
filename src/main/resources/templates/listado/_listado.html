@@ -33,7 +33,7 @@
                     <th:block th:if="${data != null and !data.isEmpty()}">
 
                         <tr th:each="aviso : ${data}" 
-                            th:onclick="|window.location='@{/detalles(id=${aviso.id})}'|"
+                            th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|"
                             style="cursor: pointer;">
                             
                             <td th:text="${aviso.fecha_ingreso}"></td>

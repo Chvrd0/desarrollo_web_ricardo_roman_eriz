@@ -29,7 +29,7 @@ public class ApiService {
     // ================================
     // COMENTARIOS de un aviso
     // ================================
-    public List<Map<String, String>> getComentarios(Long avisoId) {
+    public List<Map<String, String>> getComentarios(Integer avisoId) {
         List<Comentario> comentarios = comentarioRepository.findAllByAvisoIdOrderByFechaAsc(avisoId);
         List<Map<String, String>> data = new ArrayList<>();
 

@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface ComentarioRepository extends JpaRepository<Comentario, Integer> {
 
     // Todos los comentarios de un aviso, ordenados por fecha ascendente
-    List<Comentario> findAllByAvisoIdOrderByFechaAsc(Long avisoId);
+    List<Comentario> findAllByAvisoIdOrderByFechaAsc(Integer avisoId);
 }

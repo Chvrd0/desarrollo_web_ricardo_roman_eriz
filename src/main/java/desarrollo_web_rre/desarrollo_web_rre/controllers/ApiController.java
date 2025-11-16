@@ -1,12 +1,16 @@
 package desarrollo_web_rre.desarrollo_web_rre.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import desarrollo_web_rre.desarrollo_web_rre.models.Comentario;
 import desarrollo_web_rre.desarrollo_web_rre.services.ApiService;
 
 @RestController
@@ -23,9 +27,8 @@ public class ApiController {
     // ======================================
     @GetMapping("/aviso/{id}/comentarios")
     public List<Map<String, String>> getComentariosEndpoint(
-        @PathVariable("id") Long avisoId
+        @PathVariable("id") Integer avisoId
     ) {
-        // Equivalente a: db.get_aviso_id(id, Comentario) + [i.to_dict() for i in comentarios]
         return apiService.getComentarios(avisoId);
     }
 
@@ -34,7 +37,6 @@ public class ApiController {
     // ======================================
     @GetMapping("/get-line-data")
     public List<Map<String, String>> getLineDataEndpoint() {
-        // Equivalente a get_line_stats() en Flask
         return apiService.getLineStats();
     }
 
@@ -43,7 +45,6 @@ public class ApiController {
     // ======================================
     @GetMapping("/get-pie-data")
     public List<Map<String, Object>> getPieDataEndpoint() {
-        // Equivalente a get_pie_stats() en Flask
         return apiService.getPieStats();
     }
 
@@ -52,7 +53,40 @@ public class ApiController {
     // ======================================
     @GetMapping("/get-bar-data")
     public Map<String, Object> getBarDataEndpoint() {
-        // Equivalente a get_bar_stats() en Flask
         return apiService.getBarStats();
+    }
+
+    // ======================================
+    // COMENTARIOS: POST "/aviso/{id}/nuevo_comentario"
+    // ======================================
+    @PostMapping("/aviso/{id}/nuevo_comentario")
+    public Comentario postComentarioEndpoint(
+        @PathVariable("id") Integer avisoId,
+        @RequestBody Map<String, String> payload
+    ) {
+        // apiService necesita un nuevo método para manejar esto
+        String nombre = payload.get("c_nombre");
+        String texto = payload.get("c_texto");
+
+        // Asumo que tienes un método en ApiService para crear el comentario
+        // (Probablemente necesites inyectar ComentarioRepository aquí o en ApiService)
+        Comentario nuevoComentario = new Comentario(
+            nombre,
+            texto,
+            LocalDateTime.now(),
+            avisoId
+        );
+
+        // Llama al servicio para guardarlo
+        // Este es un ejemplo, deberás implementar la lógica de guardado.
+        // return apiService.saveComentario(nuevoComentario); 
+
+        // O si inyectas el repo aquí:
+        // return comentarioRepository.save(nuevoComentario);
+
+        // Por ahora, solo como ejemplo (implementa el guardado):
+        System.out.println("Guardando nuevo comentario: " + nombre + ": " + texto);
+        // DEBES IMPLEMENTAR EL GUARDADO Y DEVOLVER EL OBJETO GUARDADO
+        return nuevoComentario; 
     }
 }

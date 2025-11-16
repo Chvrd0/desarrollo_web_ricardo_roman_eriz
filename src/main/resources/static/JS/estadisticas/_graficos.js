@@ -101,7 +101,7 @@ Highcharts.chart('grafico-3', {
 // ============================
 
 // Se solicita al backend Flask la información en formato JSON
-fetch("http://127.0.0.1:5000/get-line-data")
+fetch("/get-line-data")
     .then((response) => response.json()) // Se convierte la respuesta a JSON
     .then((data) => {
         // El backend envía una lista de objetos { dia: "YYYY-MM-DD", cantidad: N }
@@ -141,7 +141,7 @@ fetch("http://127.0.0.1:5000/get-line-data")
 // PETICIÓN 2: Datos del gráfico de torta
 // ============================
 
-fetch("http://127.0.0.1:5000/get-pie-data")
+fetch("/get-pie-data")
     .then((response) => response.json()) // Convierte respuesta a JSON
     .then((data) => {
         console.log(data);
@@ -166,7 +166,7 @@ fetch("http://127.0.0.1:5000/get-pie-data")
 // PETICIÓN 3: Datos del gráfico de barras
 // ============================
 
-fetch("http://127.0.0.1:5000/get-bar-data") 
+fetch("/get-bar-data") 
     .then((response) => response.json()) // Convierte respuesta a JSON
     .then((data) => {
         console.log(data.series);
