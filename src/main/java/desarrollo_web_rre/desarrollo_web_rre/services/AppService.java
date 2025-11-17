@@ -301,7 +301,7 @@ public class AppService {
                 pathImage = img.getRutaArchivo() + img.getNombreArchivo();
             }
 
-            // --- AÑADIR CÁLCULO DE NOTA PROMEDIO ---
+            
             List<Nota> notas = notaRepository.findAllByAvisoId(aviso.getId());
             double notaPromedio = 0.0;
             if (notas != null && !notas.isEmpty()) {
@@ -310,9 +310,8 @@ public class AppService {
                                     .average()
                                     .orElse(0.0);
             }
-            // Guardamos el promedio formateado a 1 decimal
+            
             avisoData.put("nota_promedio", String.format("%.1f", notaPromedio));
-            // --- FIN DE CÁLCULO ---
 
             String um = "mes(es)";
             if ("a".equalsIgnoreCase(aviso.getUnidadMedida())) {
