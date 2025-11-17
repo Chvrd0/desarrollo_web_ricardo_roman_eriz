@@ -11,15 +11,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import desarrollo_web_rre.desarrollo_web_rre.models.Comentario;
+import desarrollo_web_rre.desarrollo_web_rre.models.NotaRepository;
 import desarrollo_web_rre.desarrollo_web_rre.services.ApiService;
+import desarrollo_web_rre.desarrollo_web_rre.models.Nota; // IMPORTAR
+import desarrollo_web_rre.desarrollo_web_rre.models.NotaRepository;
 
 @RestController
 public class ApiController {
 
     private final ApiService apiService;
+    private final NotaRepository notaRepository;
 
-    public ApiController(ApiService apiService) {
+    public ApiController(ApiService apiService, NotaRepository notaRepository) {
         this.apiService = apiService;
+        this.notaRepository = notaRepository;
     }
 
     // ======================================
@@ -88,5 +93,27 @@ public class ApiController {
         System.out.println("Guardando nuevo comentario: " + nombre + ": " + texto);
         // DEBES IMPLEMENTAR EL GUARDADO Y DEVOLVER EL OBJETO GUARDADO
         return nuevoComentario; 
+    }
+
+    // ======================================
+    // NOTAS: POST "/aviso/{id}/nueva_nota"
+    // (NUEVO ENDPOINT)
+    // ======================================
+    @PostMapping("/aviso/{id}/nueva_nota")
+    public Nota postNotaEndpoint(
+        @PathVariable("id") Integer avisoId,
+        @RequestBody Map<String, String> payload
+    ) {
+        // Asumimos que el JS envía {"nota": "5"}
+        Integer valorNota = Integer.parseInt(payload.get("nota")); 
+
+        // Validamos por si acaso
+        if (valorNota < 1 || valorNota > 7) {
+            throw new IllegalArgumentException("La nota debe estar entre 1 y 7");
+        }
+
+        Nota nuevaNota = new Nota(valorNota, avisoId);
+        
+        return notaRepository.save(nuevaNota);
     }
 }

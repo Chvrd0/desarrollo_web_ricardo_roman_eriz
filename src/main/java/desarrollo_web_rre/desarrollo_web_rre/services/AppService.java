@@ -29,6 +29,8 @@ import desarrollo_web_rre.desarrollo_web_rre.models.ContactarPor;
 import desarrollo_web_rre.desarrollo_web_rre.models.ContactarPorRepository;
 import desarrollo_web_rre.desarrollo_web_rre.models.Foto;
 import desarrollo_web_rre.desarrollo_web_rre.models.FotoRepository;
+import desarrollo_web_rre.desarrollo_web_rre.models.Nota;
+import desarrollo_web_rre.desarrollo_web_rre.models.NotaRepository;
 import desarrollo_web_rre.desarrollo_web_rre.models.Region;
 import desarrollo_web_rre.desarrollo_web_rre.models.RegionRepository;
 
@@ -43,6 +45,7 @@ public class AppService {
     private final FotoRepository fotoRepository;
     private final ContactarPorRepository contactarPorRepository;
     private final ComentarioRepository comentarioRepository;
+    private final NotaRepository notaRepository;
 
     public AppService(
         AvisoRepository avisoRepository,
@@ -50,7 +53,8 @@ public class AppService {
         ComunaRepository comunaRepository,
         FotoRepository fotoRepository,
         ContactarPorRepository contactarPorRepository,
-        ComentarioRepository comentarioRepository
+        ComentarioRepository comentarioRepository,
+        NotaRepository notaRepository
     ) throws IOException {
 
         this.avisoRepository = avisoRepository;
@@ -59,6 +63,7 @@ public class AppService {
         this.fotoRepository = fotoRepository;
         this.contactarPorRepository = contactarPorRepository;
         this.comentarioRepository = comentarioRepository;
+        this.notaRepository = notaRepository;
 
         // Igual que en Confessions: resolver ruta absoluta a /static
         Path staticDir = Paths.get(ResourceUtils.getFile("classpath:static").getAbsolutePath());
@@ -67,11 +72,11 @@ public class AppService {
     }
 
     // ================================
-    // PORTADA: últimos N avisos
+    // PORTADA: últimos 5 avisos
     // ================================
     public List<Map<String, String>> getPortadaData(Integer pageSize) {
         Page<Aviso> page = avisoRepository.findAllByOrderByFechaIngresoDesc(
-            PageRequest.of(0, pageSize)
+            PageRequest.of(0, 5)
         );
         List<Aviso> avisos = page.getContent();
 
@@ -242,7 +247,7 @@ public class AppService {
         // Crear fotos asociadas
         for (String filename : savedFilenames) {
             Foto foto = new Foto(
-                "uploads",
+                "uploads/",
                 filename,
                 aviso.getId()
             );
@@ -283,6 +288,8 @@ public class AppService {
         for (Aviso aviso : avisos) {
             Map<String, String> avisoData = new HashMap<>();
 
+
+
             Comuna comuna = null;
             if (aviso.getComunaId() != null) {
                 comuna = comunaRepository.findById(aviso.getComunaId()).orElse(null);
@@ -293,6 +300,19 @@ public class AppService {
             if (img != null) {
                 pathImage = img.getRutaArchivo() + img.getNombreArchivo();
             }
+
+            // --- AÑADIR CÁLCULO DE NOTA PROMEDIO ---
+            List<Nota> notas = notaRepository.findAllByAvisoId(aviso.getId());
+            double notaPromedio = 0.0;
+            if (notas != null && !notas.isEmpty()) {
+                notaPromedio = notas.stream()
+                                    .mapToInt(Nota::getValor)
+                                    .average()
+                                    .orElse(0.0);
+            }
+            // Guardamos el promedio formateado a 1 decimal
+            avisoData.put("nota_promedio", String.format("%.1f", notaPromedio));
+            // --- FIN DE CÁLCULO ---
 
             String um = "mes(es)";
             if ("a".equalsIgnoreCase(aviso.getUnidadMedida())) {

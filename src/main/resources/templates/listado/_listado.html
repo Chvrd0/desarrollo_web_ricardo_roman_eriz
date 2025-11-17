@@ -26,6 +26,9 @@
                         <th>Cantidad Tipo <br>Edad</th>
                         <th>Nombre <br> Contacto</th>
                         <th>Foto</th>
+
+                        <th>Nota Promedio</th>
+                        <th>Evaluar</th>
                     </tr>
                 </thead>
 
@@ -33,25 +36,39 @@
                     <th:block th:if="${data != null and !data.isEmpty()}">
 
                         <tr th:each="aviso : ${data}" 
-                            th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|"
                             style="cursor: pointer;">
                             
-                            <td th:text="${aviso.fecha_ingreso}"></td>
-                            <td th:text="${aviso.fecha_entrega}"></td>
-                            <td th:text="${aviso.comuna}"></td>
-                            <td th:text="${aviso.sector}"></td>
-                            <td>
+                            <td th:text="${aviso.fecha_ingreso}" th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|"></td>
+                            <td th:text="${aviso.fecha_entrega}" th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|"></td>
+                            <td th:text="${aviso.comuna}" th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|"></td>
+                            <td th:text="${aviso.sector}" th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|"></td>
+                            <td th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|">
 
                                 [[${aviso.cantidad}]] [[${aviso.tipo}]]<br>
                                 [[${aviso.edad}]] [[${aviso.unidad_medida}]]
                             </td>
-                            <td>
+                            <td th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|">
                                 [[${aviso.nombre}]]<br>
                                 correo: [[${aviso.email}]]
                             </td>
-                            <td>
+                            <td th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|">
 
                                 <img th:src="@{${aviso.path_image}}" alt="Foto de adopción" width="200">
+                            </td>
+                            <td th:text="${aviso.nota_promedio != 0.0 ? aviso.nota_promedio : '-'}" th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|"></td>
+                            <td>
+                                <form class="form-nota-listado" th:data-aviso-id="${aviso.id}">
+                                    <select name="c_nota" class="select-nota-listado" onchange="submitNota(this);">
+                                        <option value="">-</option>
+                                        <option value="7">7</option>
+                                        <option value="6">6</option>
+                                        <option value="5">5</option>
+                                        <option value="4">4</option>
+                                        <option value="3">3</option>
+                                        <option value="2">2</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                </form>
                             </td>
                         </tr>
                     </th:block>
@@ -84,5 +101,6 @@
         </form>
     </main>
 
+    <script th:src="@{/JS/listado/funciones_listado.js}"></script>
 </body>
 </html>

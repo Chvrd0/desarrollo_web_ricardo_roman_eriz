@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `tarea2`.`nota` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+DROP TABLE IF EXISTS nota;
 
 SHOW CREATE TABLE comentario;
 SHOW CREATE TABLE aviso_adopcion;
