@@ -1,6 +1,7 @@
 package desarrollo_web_rre.desarrollo_web_rre.controllers;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,7 +101,7 @@ public class ApiController {
     // (NUEVO ENDPOINT)
     // ======================================
     @PostMapping("/aviso/{id}/nueva_nota")
-    public Nota postNotaEndpoint(
+    public Map<String, Double> postNotaEndpoint(
         @PathVariable("id") Integer avisoId,
         @RequestBody Map<String, String> payload
     ) {
@@ -113,7 +114,20 @@ public class ApiController {
         }
 
         Nota nuevaNota = new Nota(valorNota, avisoId);
+        notaRepository.save(nuevaNota);
+
+        List<Nota> notas = notaRepository.findAllByAvisoId(avisoId);
+        double notaPromedio = 0.0;
+        if (notas != null && !notas.isEmpty()) {
+            notaPromedio = notas.stream()
+                                .mapToInt(Nota::getValor)
+                                .average()
+                                .orElse(0.0);
+        }
+
+        Map<String, Double> resultado = new HashMap<>();
+        resultado.put("notaPromedio", notaPromedio);
         
-        return notaRepository.save(nuevaNota);
+        return resultado;
     }
 }

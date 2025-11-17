@@ -1,8 +1,7 @@
 function submitNota(selectElement) {
     const notaValue = selectElement.value;
-    if (!notaValue) return; // No hacer nada si selecciona la opción vacía "-"
+    if (!notaValue) return;
 
-    // Encontrar el formulario padre para obtener el ID del aviso
     const form = selectElement.closest('form');
     const avisoId = form.dataset.avisoId;
     
@@ -19,17 +18,27 @@ function submitNota(selectElement) {
         if (!response.ok) {
             throw new Error('Error al enviar nota');
         }
-        return response.json();
+        return response.json(); 
     })
-    .then(nuevaNota => {
-        alert('¡Gracias por tu nota!');
-        // Recargamos la página para que se actualice el promedio
-        window.location.reload(); 
+    .then(data => {
+        // 1. Formateamos el nuevo promedio (ej: 5.5)
+        const nuevoPromedio = data.notaPromedio.toFixed(1);
+
+        // 2. Encontramos la fila (tr) en la que estamos
+        const fila = selectElement.closest('tr');
+        
+        // 3. Buscamos la celda del promedio DENTRO de esa fila
+        const celdaPromedio = fila.querySelector('.nota-promedio-cell');
+        
+        // 4. Actualizamos su texto
+        if (celdaPromedio) {
+            celdaPromedio.innerText = `${nuevoPromedio}`;
+        }
+
     })
     .catch(err => {
         console.error("Error al publicar nota:", err);
         alert("Error al guardar tu nota. Inténtalo de nuevo.");
-        // Resetea el select por si falla
         selectElement.value = "";
     });
 }

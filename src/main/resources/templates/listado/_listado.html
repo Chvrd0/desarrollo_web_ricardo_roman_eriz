@@ -55,7 +55,7 @@
 
                                 <img th:src="@{${aviso.path_image}}" alt="Foto de adopción" width="200">
                             </td>
-                            <td th:text="${aviso.nota_promedio != 0.0 ? aviso.nota_promedio : '-'}" th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|"></td>
+                            <td class="nota-promedio-cell" th:text="${aviso.nota_promedio != 0 ? aviso.nota_promedio : '-'}" th:onclick="|window.location='@{/aviso/(id=${aviso.id})}'|"></td>
                             <td>
                                 <form class="form-nota-listado" th:data-aviso-id="${aviso.id}">
                                     <select name="c_nota" class="select-nota-listado" onchange="submitNota(this);">
