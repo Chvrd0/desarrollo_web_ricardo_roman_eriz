@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas</title>
+
+    <link rel="stylesheet" th:href="@{/CSS/style.css}">
+</head>
+<body>
+    <header>
+        <div class="titulo">
+            <h1>Estadísticas</h1>
+        </div>
+    </header>
+
+    <main>
+
+        <div class="stats">
+            <div class="grafico1">
+                <h2>Gráfico de la cantidad de avisos a lo largo del año</h2>
+
+                <div id="grafico-1"></div>
+            </div>
+
+            <div class="grafico2">
+                <h2>Gráfico del porcentaje de tipos de mascotas de los avisos</h2>
+                <div id="grafico-2"></div>
+            </div>
+
+            <div class="grafico3">
+                <h2>Gráfico de la cantidad de avisos mensualmente</h2>
+                <div id="grafico-3"></div>
+            </div>
+
+            <br>
+
+            <form name="e_portada" th:action="@{/}">
+                <button id="stats-btn" type="submit">Volver a la portada</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    
+    <script th:src="@{/JS/estadisticas/_estadisticas.js}"></script>
+    <script th:src="@{/JS/estadisticas/_graficos.js}"></script>
+</body>
+</html>

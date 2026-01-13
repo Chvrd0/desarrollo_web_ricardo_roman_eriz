@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${aviso.nombre}">Detalles del aviso</title>
+    <link rel="stylesheet" th:href="@{/CSS/style.css}">
+</head>
+<body>
+    <div class="detalle-box">
+        <h2 th:text="${aviso.nombre}">Nombre del aviso</h2>
+
+    <img th:if="${fotos != null and !fotos.isEmpty()}" 
+            th:src="@{${fotos[0].ruta_archivo} + '/' + ${fotos[0].nombre_archivo}}" 
+            th:alt="${aviso.nombre}">
+
+    <ul>
+        <li>Tipo: <span th:text="${#strings.capitalize(aviso.tipo)}">Tipo</span></li>
+        
+        <li>
+            Edad: [[${aviso.edad}]] 
+            <span th:text="${aviso.unidad_medida == 'a' ? 'año(s)' : 'mes(es)'}">año(s)</span>
+        </li>
+        
+        <li>Cantidad: [[${aviso.cantidad}]]</li>
+        
+        <li>Descripción: <span th:text="${aviso.descripcion} ?: 'Sin descripción'">Descripción</span></li>
+        
+        <li>Ubicación: [[${comuna.nombre}]], [[${region.nombre}]]</li>
+    </ul>
+
+    <br>
+    <h3>Contacto:</h3>
+    <ul>
+        <li>Nombre: [[${aviso.nombre}]]</li>
+        
+        <li th:each="c : ${contactos}">
+            [[${c.nombre}]]: [[${c.identificador}]]
+        </li>
+        
+        <li th:if="${aviso.celular != null}">
+            Teléfono: [[${aviso.celular}]]
+        </li>
+        <li>Correo: [[${aviso.email}]]</li>
+    </ul>
+
+    <br>
+    <h3>Fechas</h3>
+    <ul>
+        <li>Publicación: <span th:text="${#temporals.dates(aviso.fecha_ingreso, 'yyyy-MM-dd HH:mm')}">Fecha</span></li>
+        <li>Retiro desde: [[${aviso.fecha_entrega}]]</li>
+    </ul>
+
+    <br>
+    <h3>Fotos adicionales:</h3>
+    <th:block th:each="foto, iterStat : ${fotos}">
+        <img th:src="@{${foto.ruta_archivo} + '/' + ${foto.nombre_archivo}}" 
+            th:alt="|${aviso.nombre} ${iterStat.count}|">
+    </th:block>
+
+    <br>
+    <div class="comentarios">
+        <h3>Comentarios: </h3>
+        <div id="lista-comentarios">
+        </div>
+
+        <form name="nuevo_comentario" id="form-comentario" th:data-aviso-id="${aviso.id}">
+            <div id="val-box" hidden>
+                <h2 id="val-msg"></h2>
+                <ul id="val-list"></ul>
+            </div>
+            <label for="c_nombre">Nombre</label><br>
+            <input type="text" name="c_nombre" id="c_nombre"><br>
+
+            <label for="c_texto">Comentario</label><br>
+            <textarea name="c_texto" id="c_texto" rows="4" cols="50"></textarea><br>
+            
+            <button id="c_enviar" type="submit">Añadir comentario</button><br>
+        </form>
+    </div>
+
+
+    <br><br>
+    <div class="botones">
+        <form th:action="@{/listado}">
+            <button id="listado-btn" type="submit">Volver al listado</button>
+        </form>
+        <form th:action="@{/}">
+            <button id="portada-btn" type="submit">Volver a la portada</button>
+        </form>
+    </div>
+    </div>
+
+<script th:src="@{/JS/listado/detalles_listado.js}"></script>
+</body>
+</html>

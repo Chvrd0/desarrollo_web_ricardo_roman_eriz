@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Portada</title>
+
+    <!-- CSS -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="titulo">
+            <h1>Portal de Adopciones</h1>
+        </div>
+    </header>
+
+    <main>
+
+        <div class="botones">
+            <form name="p_formulario" th:action="@{/nuevo-aviso}">
+                <button id="publicar-btn">Publicar nuevo aviso</button>
+            </form>
+
+            <form name="p_listado" th:action="@{/listado(page=1)}">
+                <button id="listado-btn">Listado de adopciones</button>
+            </form>
+
+            <form name="p_estadisticas" th:action="@{/estadisticas}">
+                <button id="stats-btn">Estadísticas</button>
+            </form>
+        </div>
+
+        <br>
+
+        <h2>Últimos avisos:</h2>
+
+        <div class="tabla">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha de publicación</th>
+                        <th>Comuna</th>
+                        <th>Sector</th>
+                        <th>Cantidad Tipo <br>Edad</th>
+                        <th>Foto</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="aviso : ${data}">
+                        <td th:text="${aviso.fecha_ingreso}"></td>
+                        <td th:text="${aviso.comuna}"></td>
+                        <td th:text="${aviso.sector}"></td>
+
+                        <td>
+                            <span th:text="${aviso.cantidad}"></span>
+                            <span th:text="${aviso.tipo}"></span>
+                            <br>
+                            <span th:text="${aviso.edad}"></span>
+                            <span th:text="${aviso.unidad_medida}"></span>
+                        </td>
+
+                        <td>
+                            <img th:src="${aviso.path_image}" alt="Foto" width="300">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <script th:src="@{/JS/portada/_portada.js}"></script>
+</body>
+
+</html>
